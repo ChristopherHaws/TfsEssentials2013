@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="Spiral.TfsEssentials.Controls.Checkins.CheckinsPageView"
+			 x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:TeamExplorer="clr-namespace:Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;assembly=Microsoft.TeamFoundation.Controls" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary x:Uid="VSResourceDictionary" Source="pack://application:,,,/Microsoft.TeamFoundation.Controls;component/WPF/SharedResources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<StackPanel Orientation="Vertical" Margin="0,3,0,0">
+		<StackPanel Margin="5,2,0,0">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="50"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<TextBlock Text="Branch:" Grid.Column="0" />
+				<TeamExplorer:DropDownLink
+					Grid.Column="1"
+					Foreground="{DynamicResource BodyTextBrushKey}"
+					Text="{Binding Path=SelectedBranch}"
+					IsEnabled="{Binding CanChooseBranch}"
+					ShowArrow="{Binding CanChooseBranch}"
+					DropDownMenuCommand="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=ShowBranchDropDownCommand}">
+					<TeamExplorer:DropDownLink.DropDownMenu>
+						<ContextMenu
+							DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
+							ItemsSource="{Binding Branches}" 
+							Placement="Bottom"
+							StaysOpen="False"
+							HasDropShadow="True"
+							>
+							<ContextMenu.ItemTemplate>
+								<DataTemplate>
+									<MenuItem 
+										Header="{Binding Path=Properties.RootItem.Item}" 
+										Command="{Binding DataContext.SelectSourceBranchCommand, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
+										CommandParameter="{Binding Path=.}"/>
+								</DataTemplate>
+							</ContextMenu.ItemTemplate>
+						</ContextMenu>
+					</TeamExplorer:DropDownLink.DropDownMenu>
+				</TeamExplorer:DropDownLink>
+			</Grid>
+		</StackPanel>
+	</StackPanel>
+</UserControl>
