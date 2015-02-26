@@ -1,16 +1,11 @@
-﻿using Microsoft.TeamFoundation.Controls;
-using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
-using Microsoft.TeamFoundation.VersionControl.Client;
+﻿using System.ComponentModel.Design;
+using Microsoft.TeamFoundation.Common.Internal;
+using Microsoft.TeamFoundation.Controls;
 using Spiral.TfsEssentials.WPF.TeamExplorer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Spiral.TfsEssentials.Controls.Checkins
 {
-	[TeamExplorerPageAttribute(CheckinsPage.PageId)]
+	[TeamExplorerPage(PageId)]
 	internal class CheckinsPage : TfsTeamExplorerPageBase
 	{
 		public const string PageId = "6EF9B9F7-71EE-4B9A-ACCF-9447536A9765";
@@ -18,35 +13,37 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 		public CheckinsPage()
         {
 			this.Title = "Unsynced Checkins";
-			this.PageContent = new CheckinsPageView();
-            View.SetViewModel(this);
         }
-
-		protected CheckinsPageView View
-		{
-			get
-			{
-				return (CheckinsPageView)PageContent;
-			}
-		}
 
 		protected override object CreateModel(PageInitializeEventArgs e)
 		{
 			return (object)new CheckinsModel(e.ServiceProvider, this.TaskFactory);
 		}
 
-		List<BranchObject> _branches = new List<BranchObject>();
-		public List<BranchObject> Branches
+		protected override object CreateView(PageInitializeEventArgs e)
 		{
-			get
-			{
-				return _branches;
-			}
+			var view = new CheckinsPageView();
+			return (object)view;
 		}
 
-		public bool CanChooseBranch
+		protected override ITeamExplorerPage CreateViewModel(PageInitializeEventArgs e)
 		{
-			get { return Branches.Any(); }
+			var viewModel = new CheckinsPageViewModel(this.Model as CheckinsModel);
+			return viewModel;
+		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+
+			var service = this.ServiceProvider.GetService<IServiceContainer>();
+
+			if (service == null)
+			{
+				return;
+			}
+
+			service.RemoveService(typeof(CheckinsModel));
 		}
 	}
 }

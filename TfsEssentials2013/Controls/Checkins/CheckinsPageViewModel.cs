@@ -1,10 +1,6 @@
-﻿using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 
 namespace Spiral.TfsEssentials.Controls.Checkins
 {
@@ -35,27 +31,17 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 			}
 		}
 
+		public BranchDropDownViewModel BranchDropDownViewModel { get; private set; }
+
+		public CheckinsPageViewModel(CheckinsModel model)
+		{
+			this.Model = model;
+			this.BranchDropDownViewModel = new BranchDropDownViewModel((TeamExplorerPageViewModelBase)this);
+		}
+
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			throw new NotImplementedException();
-
-			//switch (e.PropertyName)
-			//{
-			//	case "IsGitOperationRunning":
-			//	case "Branch":
-			//		this.UpdateActionLinks();
-			//		break;
-			//	case "IsRepositoryOperationInProgress":
-			//		this.UpdateActionLinks();
-			//		IServiceProvider serviceProvider = this.ServiceProvider;
-			//		if (serviceProvider == null)
-			//			break;
-			//		SccNotificationService notificationService = (SccNotificationService)SccServiceHostExtensionMethods.GetSccService<SccNotificationService>(serviceProvider);
-			//		if (notificationService == null || notificationService.IsConflictNotificationVisible((ITeamExplorerPage)null))
-			//			break;
-			//		this.UpdateOperationInProgressNotification();
-			//		break;
-			//}
 		}
 	}
 }

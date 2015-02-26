@@ -4,9 +4,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:TeamExplorer="clr-namespace:Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;assembly=Microsoft.TeamFoundation.Controls" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+			 xmlns:tfs="clr-namespace:Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;assembly=Microsoft.TeamFoundation.Controls" 
+			 xmlns:mvvm="clr-namespace:Microsoft.TeamFoundation.MVVM;assembly=Microsoft.TeamFoundation.Controls"
+			 mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+			 mvvm:MVVMSupport.ViewModel="{Binding}">
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -14,7 +16,36 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</UserControl.Resources>
-	<StackPanel Orientation="Vertical" Margin="0,3,0,0">
+	
+	<Grid x:Uid="mainGrid" Margin="0">
+		<Grid.RowDefinitions>
+			<RowDefinition x:Uid="BranchPickerRow" Height="Auto"/>
+			<RowDefinition x:Uid="actionsRow" Height="Auto"/>
+			<RowDefinition x:Uid="ProgressRow" Height="Auto"/>
+		</Grid.RowDefinitions>
+		<WrapPanel x:Name="BranchesStackPanel" Grid.Row="0">
+			<TextBlock
+				x:Uid="branchLabel"
+				Margin="6,6,3,0"
+				Localization.Attributes="Text (Modifiable Readable Text)"
+				Foreground="{StaticResource SubduedTextBrushKey}"
+				Text="Branch:" />
+			<tfs:DropDownLink
+				x:Name="CurrentBranchLink"
+				x:Uid="currentBranchLink"
+				Margin="3,6,3,0"
+				Text="{Binding Path=BranchDropDownViewModel.CurrentBranchName}"
+				DropDownMenuCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ShowBranchesDropDownCommand}"/>
+			<Separator Style="{StaticResource VerticalSeparator}" Margin="3,6,3,0"/>
+			<tfs:TextLink x:Uid="viewChangesLink" Margin="3,6,3,0" Text="Changes"
+                      Localization.Attributes="Text (Modifiable Readable Text)"
+                      Command="{Binding Path=ViewChangesCommand}"/>
+		</WrapPanel>
+		<Button Grid.Row="1">Hello</Button>
+		<Button Grid.Row="2">World</Button>
+	</Grid>
+	
+	<!--<StackPanel Orientation="Vertical" Margin="0,3,0,0">
 		<StackPanel Margin="5,2,0,0">
 			<Grid>
 				<Grid.ColumnDefinitions>
@@ -27,21 +58,20 @@
 					Foreground="{DynamicResource BodyTextBrushKey}"
 					Text="{Binding Path=SelectedBranch}"
 					IsEnabled="{Binding CanChooseBranch}"
-					ShowArrow="{Binding CanChooseBranch}"
-					DropDownMenuCommand="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=ShowBranchDropDownCommand}">
+					ShowArrow="{Binding CanChooseBranch}">
+					--><!--DropDownMenuCommand="{Binding RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}, Path=ShowBranchesDropDownCommand}">--><!--
 					<TeamExplorer:DropDownLink.DropDownMenu>
 						<ContextMenu
 							DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
 							ItemsSource="{Binding Branches}" 
 							Placement="Bottom"
 							StaysOpen="False"
-							HasDropShadow="True"
-							>
+							HasDropShadow="True">
 							<ContextMenu.ItemTemplate>
 								<DataTemplate>
 									<MenuItem 
 										Header="{Binding Path=Properties.RootItem.Item}" 
-										Command="{Binding DataContext.SelectSourceBranchCommand, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
+										Command="{Binding DataContext.SelectBranchCommand, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"
 										CommandParameter="{Binding Path=.}"/>
 								</DataTemplate>
 							</ContextMenu.ItemTemplate>
@@ -50,5 +80,5 @@
 				</TeamExplorer:DropDownLink>
 			</Grid>
 		</StackPanel>
-	</StackPanel>
+	</StackPanel>-->
 </UserControl>

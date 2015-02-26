@@ -1,14 +1,11 @@
-﻿using Microsoft.TeamFoundation.Common.Internal;
+﻿using System;
+using System.ComponentModel.Design;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.TeamFoundation.Common.Internal;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.Threading;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Spiral.TfsEssentials.WPF.TeamExplorer
 {
@@ -24,9 +21,9 @@ namespace Spiral.TfsEssentials.WPF.TeamExplorer
 		{
 			this.TaskScheduler = new OrderedTaskScheduler();
 			this.CancellationTokenSource = new CancellationTokenSource();
-			this.TaskFactory = new TaskFactory(this.CancellationTokenSource.Token, TaskCreationOptions.HideScheduler, TaskContinuationOptions.None, (System.Threading.Tasks.TaskScheduler)this.TaskScheduler);
+			this.TaskFactory = new TaskFactory(this.CancellationTokenSource.Token, TaskCreationOptions.HideScheduler, TaskContinuationOptions.None, (TaskScheduler)this.TaskScheduler);
 			base.Initialize(sender, e);
-			IServiceContainer service = IServiceProviderExtensions.GetService<IServiceContainer>(this.ServiceProvider);
+			var service = this.ServiceProvider.GetService<IServiceContainer>();
 			if (service == null)
 				return;
 			service.AddService(typeof(TaskFactory), (object)this.TaskFactory);
@@ -36,11 +33,13 @@ namespace Spiral.TfsEssentials.WPF.TeamExplorer
 		{
 			base.Dispose();
 			this.CancellationTokenSource.Cancel();
-			IServiceContainer service = IServiceProviderExtensions.GetService<IServiceContainer>(this.ServiceProvider);
+			var service = this.ServiceProvider.GetService<IServiceContainer>();
 			if (service != null)
+			{
 				service.RemoveService(typeof(TaskFactory));
-			this.TaskFactory = (TaskFactory)null;
-			this.TaskScheduler = (OrderedTaskScheduler)null;
+			}
+			this.TaskFactory = null;
+			this.TaskScheduler = null;
 		}
 
 		public Task QueueWorkAsync(Action action)
