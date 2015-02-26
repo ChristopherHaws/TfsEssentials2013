@@ -21,23 +21,31 @@ namespace Spiral.TfsEssentials.WPF.TeamExplorer
 		{
 			this.TaskScheduler = new OrderedTaskScheduler();
 			this.CancellationTokenSource = new CancellationTokenSource();
-			this.TaskFactory = new TaskFactory(this.CancellationTokenSource.Token, TaskCreationOptions.HideScheduler, TaskContinuationOptions.None, (TaskScheduler)this.TaskScheduler);
+			this.TaskFactory = new TaskFactory(this.CancellationTokenSource.Token, TaskCreationOptions.HideScheduler, TaskContinuationOptions.None, this.TaskScheduler);
+
 			base.Initialize(sender, e);
+
 			var service = this.ServiceProvider.GetService<IServiceContainer>();
 			if (service == null)
+			{
 				return;
-			service.AddService(typeof(TaskFactory), (object)this.TaskFactory);
+			}
+
+			service.AddService(typeof(TaskFactory), this.TaskFactory);
 		}
 
 		public override void Dispose()
 		{
 			base.Dispose();
+
 			this.CancellationTokenSource.Cancel();
+
 			var service = this.ServiceProvider.GetService<IServiceContainer>();
 			if (service != null)
 			{
 				service.RemoveService(typeof(TaskFactory));
 			}
+
 			this.TaskFactory = null;
 			this.TaskScheduler = null;
 		}
@@ -49,7 +57,7 @@ namespace Spiral.TfsEssentials.WPF.TeamExplorer
 
 		public Task QueueWorkAsync(Action<CancellationToken> action)
 		{
-			return this.TaskFactory.StartNew((Action)(() => action(this.CancellationTokenSource.Token)));
+			return this.TaskFactory.StartNew((() => action(this.CancellationTokenSource.Token)));
 		}
 	}
 }

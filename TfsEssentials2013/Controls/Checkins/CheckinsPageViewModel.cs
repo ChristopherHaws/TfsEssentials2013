@@ -6,28 +6,28 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 {
 	internal class CheckinsPageViewModel : TeamExplorerPageViewModelBase
 	{
-		private CheckinsModel _model;
+		private CheckinsModel model;
 
 		public CheckinsModel Model
 		{
 			get
 			{
-				return _model;
+				return model;
 			}
 			set
 			{
-				if (_model != null)
+				if (model != null)
 				{
-					_model.PropertyChanged -= new PropertyChangedEventHandler(Model_PropertyChanged);
+					model.PropertyChanged -= new PropertyChangedEventHandler(Model_PropertyChanged);
 				}
 
-				_model = value;
-				if (_model == null)
+				model = value;
+				if (model == null)
 				{
 					return;
 				}
 
-				_model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
+				model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 		public CheckinsPageViewModel(CheckinsModel model)
 		{
 			this.Model = model;
-			this.BranchDropDownViewModel = new BranchDropDownViewModel((TeamExplorerPageViewModelBase)this);
+			this.BranchDropDownViewModel = new BranchDropDownViewModel(this);
 		}
 
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)

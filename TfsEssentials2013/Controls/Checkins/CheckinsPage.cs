@@ -17,13 +17,13 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 
 		protected override object CreateModel(PageInitializeEventArgs e)
 		{
-			return (object)new CheckinsModel(e.ServiceProvider, this.TaskFactory);
+			return new CheckinsModel(e.ServiceProvider, this.TaskFactory);
 		}
 
 		protected override object CreateView(PageInitializeEventArgs e)
 		{
 			var view = new CheckinsPageView();
-			return (object)view;
+			return view;
 		}
 
 		protected override ITeamExplorerPage CreateViewModel(PageInitializeEventArgs e)
