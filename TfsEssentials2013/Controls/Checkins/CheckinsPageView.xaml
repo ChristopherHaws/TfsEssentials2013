@@ -32,25 +32,15 @@
 			<tfs:DropDownLink x:Name="CurrentBranchLink"
 							  x:Uid="currentBranchLink"
 							  Margin="3,6,3,0"
-							  Text="{Binding Path=BranchDropDownViewModel.CurrentBranchName}"
-							  DropDownMenuCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=ShowBranchesDropDownCommand}">
+							  Text="{Binding Path=BranchDropDownViewModel.CurrentBranchName}">
 				<tfs:DropDownLink.DropDownMenu>
-					<ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
-								 ItemsSource="{Binding Path=BranchDropDownViewModel.Branches}"
-								 Placement="Bottom"
-								 StaysOpen="False"
-								 HasDropShadow="True">
-						<ContextMenu.ItemTemplate>
-							<DataTemplate>
-								<!-- <TextBlock Text="{Binding Path=Properties.RootItem.Item}" /> -->
-								<TextBlock Text="{Binding}" />
-							</DataTemplate>
-						</ContextMenu.ItemTemplate>
+					<ContextMenu Placement="Bottom" StaysOpen="False" HasDropShadow="True"
+								 DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
+								 ItemsSource="{Binding Path=BranchDropDownViewModel.Branches}">
 						<ContextMenu.ItemContainerStyle>
 							<Style TargetType="MenuItem">
-								<!--<Setter Property="Header" Value="{Binding Header}"></Setter>-->
+								<Setter Property="Header" Value="{Binding}"></Setter>
 								<Setter Property="Command" Value="{Binding DataContext.BranchDropDownViewModel.SelectBranchCommand, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"/>
-								<!-- , RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor} -->
 								<Setter Property="CommandParameter" Value="{Binding Path=.}"/>
 							</Style>
 						</ContextMenu.ItemContainerStyle>
@@ -58,7 +48,7 @@
 				</tfs:DropDownLink.DropDownMenu>
 			</tfs:DropDownLink>
 			<Separator Style="{StaticResource VerticalSeparator}" Margin="3,6,3,0"/>
-			<tfs:TextLink x:Uid="viewChangesLink" Margin="3,6,3,0" Text="Changes" Localization.Attributes="Text (Modifiable Readable Text)" Command="{Binding Path=ViewChangesCommand}"/>
+			<tfs:TextLink x:Uid="viewPendingChangesLink" Margin="3,6,3,0" Text="Pending Changes" Command="{Binding Path=ViewPendingChangesCommand}"/>
 		</WrapPanel>
 		<Button Grid.Row="1">Hello</Button>
 		<Button Grid.Row="2">World</Button>
