@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\BranchDropDownViewModel.cs" />
+    <Compile Include="WPF\RelayCommand.cs" />
     <Compile Include="WPF\TeamExplorer\NotifyPropertyChangedBase.cs" />
     <Compile Include="WPF\TeamExplorer\TeamExplorerBase.cs" />
     <Compile Include="WPF\TeamExplorer\TeamExplorerBaseNavigationItem.cs" />

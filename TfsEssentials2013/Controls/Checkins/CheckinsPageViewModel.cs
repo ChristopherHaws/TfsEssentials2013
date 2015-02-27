@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows.Input;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 
 namespace Spiral.TfsEssentials.Controls.Checkins

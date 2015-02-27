@@ -9,8 +9,6 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 	/// </summary>
 	internal partial class CheckinsPageView : UserControl, IComponentConnector
 	{
-		public ICommand ShowBranchesDropDownCommand { get; private set; }
-
 		public CheckinsPageView()
 		{
 			InitializeComponent();
