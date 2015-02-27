@@ -51,7 +51,14 @@ namespace Spiral.TfsEssentials.Controls.Merge
 		{
 			Image mergeIcon = null;
 
-			string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Resources\\Branches.ico");
+			var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location;
+
+			if(String.IsNullOrWhiteSpace(assemblyPath))
+			{
+				return null;
+			}
+
+			string path = Path.Combine(assemblyPath, "Resources\\Branches.ico");
 
 			if (File.Exists(path))
 			{
