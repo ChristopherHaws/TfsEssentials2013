@@ -3,32 +3,32 @@ using Microsoft.TeamFoundation.Common.Internal;
 using Microsoft.TeamFoundation.Controls;
 using Spiral.TfsEssentials.WPF.TeamExplorer;
 
-namespace Spiral.TfsEssentials.Controls.Checkins
+namespace Spiral.TfsEssentials.Controls.Merge
 {
 	[TeamExplorerPage(PageId)]
-	internal class CheckinsPage : TfsTeamExplorerPageBase
+	internal class MergePage : TfsTeamExplorerPageBase
 	{
 		public const string PageId = "6EF9B9F7-71EE-4B9A-ACCF-9447536A9765";
 
-		public CheckinsPage()
+		public MergePage()
         {
-			this.Title = "Unsynced Checkins";
+			this.Title = "Unsynced Merge";
         }
 
 		protected override object CreateModel(PageInitializeEventArgs e)
 		{
-			return new CheckinsModel(e.ServiceProvider, this.TaskFactory);
+			return new MergeModel(e.ServiceProvider, this.TaskFactory);
 		}
 
 		protected override object CreateView(PageInitializeEventArgs e)
 		{
-			var view = new CheckinsPageView();
+			var view = new MergePageView();
 			return view;
 		}
 
 		protected override ITeamExplorerPage CreateViewModel(PageInitializeEventArgs e)
 		{
-			var viewModel = new CheckinsPageViewModel(this.Model as CheckinsModel);
+			var viewModel = new MergePageViewModel(this.Model as MergeModel);
 			return viewModel;
 		}
 
@@ -43,7 +43,7 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 				return;
 			}
 
-			service.RemoveService(typeof(CheckinsModel));
+			service.RemoveService(typeof(MergeModel));
 		}
 	}
 }

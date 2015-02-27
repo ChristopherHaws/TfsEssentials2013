@@ -11,20 +11,20 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spiral.TfsEssentials.Controls.Checkins
+namespace Spiral.TfsEssentials.Controls.Merge
 {
-	[TeamExplorerNavigationItem(CheckinsNavigationItem.LinkId, 1000)]
-	public class CheckinsNavigationItem : TeamExplorerBaseNavigationItem
+	[TeamExplorerNavigationItem(MergeNavigationItem.LinkId, 1000)]
+	public class MergeNavigationItem : TeamExplorerBaseNavigationItem
 	{
 		public const string LinkId = "5E7F3922-32ED-4621-ACEB-D7C8D80CA3EE";
 
 		private UIContext tfsProviderContext;
 
 		[ImportingConstructor]
-		public CheckinsNavigationItem([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
+		public MergeNavigationItem([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
-			this.Text = "Unsynced Checkins";
+			this.Text = "Merge";
 
 			tfsProviderContext = UIContext.FromUIContextGuid(TeamExplorerBase.TfsProviderGuid);
 
@@ -64,7 +64,7 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 		public override void Execute()
 		{
 			var teamExplorer = GetService<ITeamExplorer>();
-			teamExplorer.NavigateToPage(new Guid(CheckinsPage.PageId), null);
+			teamExplorer.NavigateToPage(new Guid(MergePage.PageId), null);
 		}
 	}
 }

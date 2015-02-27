@@ -4,13 +4,13 @@ using System.Windows.Input;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.MVVM;
 
-namespace Spiral.TfsEssentials.Controls.Checkins
+namespace Spiral.TfsEssentials.Controls.Merge
 {
-	internal class CheckinsPageViewModel : TeamExplorerPageViewModelBase
+	internal class MergePageViewModel : TeamExplorerPageViewModelBase
 	{
-		private CheckinsModel model;
+		private MergeModel model;
 
-		public CheckinsModel Model
+		public MergeModel Model
 		{
 			get
 			{
@@ -39,7 +39,7 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 
 		public ICommand ViewPendingChangesCommand { get; private set; }
 
-		public CheckinsPageViewModel(CheckinsModel model)
+		public MergePageViewModel(MergeModel model)
 		{
 			this.Model = model;
 			this.BranchDropDownViewModel = new BranchDropDownViewModel(this);

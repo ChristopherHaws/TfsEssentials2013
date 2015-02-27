@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spiral.TfsEssentials.Controls.Checkins
+namespace Spiral.TfsEssentials.Controls.Merge
 {
-	internal class CheckinsModel : TfsTeamExplorerModelBase
+	internal class MergeModel : TfsTeamExplorerModelBase
 	{
 		private bool _isRepositoryOperationInProgress;
 
@@ -24,7 +24,7 @@ namespace Spiral.TfsEssentials.Controls.Checkins
 			}
 		}
 
-		public CheckinsModel(IServiceProvider serviceProvider, TaskFactory taskFactory)
+		public MergeModel(IServiceProvider serviceProvider, TaskFactory taskFactory)
 			: base(serviceProvider, taskFactory)
 		{
 			TeamFoundationTrace.Verbose((string[])TraceKeywordSets.TeamExplorer, "Entering CheckinModel constructor");
