@@ -18,7 +18,7 @@ namespace Spiral.TfsEssentials.Controls.Merge
 	{
 		public const string LinkId = "5E7F3922-32ED-4621-ACEB-D7C8D80CA3EE";
 
-		private UIContext tfsProviderContext;
+		private readonly UIContext tfsProviderContext;
 
 		[ImportingConstructor]
 		public MergeNavigationItem([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
