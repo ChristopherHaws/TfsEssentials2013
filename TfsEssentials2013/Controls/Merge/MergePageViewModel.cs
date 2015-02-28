@@ -20,7 +20,7 @@ namespace Spiral.TfsEssentials.Controls.Merge
 			{
 				if (model != null)
 				{
-					model.PropertyChanged -= new PropertyChangedEventHandler(Model_PropertyChanged);
+					model.PropertyChanged -= Model_PropertyChanged;
 				}
 
 				model = value;
@@ -29,13 +29,11 @@ namespace Spiral.TfsEssentials.Controls.Merge
 					return;
 				}
 
-				model.PropertyChanged += new PropertyChangedEventHandler(Model_PropertyChanged);
+				model.PropertyChanged += Model_PropertyChanged;
 			}
 		}
 
 		public BranchDropDownViewModel BranchDropDownViewModel { get; private set; }
-
-		public ICommand SelectBranchCommand { get; private set; }
 
 		public ICommand ViewPendingChangesCommand { get; private set; }
 
