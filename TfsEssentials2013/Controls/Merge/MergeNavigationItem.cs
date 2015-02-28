@@ -51,7 +51,7 @@ namespace Spiral.TfsEssentials.Controls.Merge
 		{
 			Image mergeIcon = null;
 
-			var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location;
+			var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
 			if(String.IsNullOrWhiteSpace(assemblyPath))
 			{

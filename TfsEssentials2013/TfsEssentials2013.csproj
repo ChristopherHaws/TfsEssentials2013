@@ -136,6 +136,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\BranchDropDownViewModel.cs" />
+    <Compile Include="Controls\ChangesetToolTipAuthorConverter.cs" />
+    <Compile Include="Controls\ChangesetToolTipMessageConverter.cs" />
+    <Compile Include="Controls\DateTimeFormatConverter.cs" />
+    <Compile Include="Controls\Merge\Incoming\IncomingChangesetsSection.cs" />
+    <Compile Include="Controls\Merge\Incoming\IncomingChangesetsSectionView.xaml.cs">
+      <DependentUpon>IncomingChangesetsSectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Merge\Incoming\IncomingChangesetsSectionViewModel.cs" />
+    <Compile Include="Controls\Merge\ChangesetsSectionListViewMaxHeightConverter.cs" />
+    <Compile Include="Controls\Merge\ChangesetsSectionViewModelBase.cs" />
+    <Compile Include="Controls\TfsBranch.cs" />
+    <Compile Include="Controls\TfsBranchViewModel.cs" />
+    <Compile Include="Controls\TfsChangeset.cs" />
     <Compile Include="WPF\TeamExplorer\NotifyPropertyChangedBase.cs" />
     <Compile Include="WPF\TeamExplorer\TeamExplorerBase.cs" />
     <Compile Include="WPF\TeamExplorer\TeamExplorerBaseNavigationItem.cs" />
@@ -185,11 +198,20 @@
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\Merge\Incoming\IncomingChangesetsSectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Merge\MergePageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SharedResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>

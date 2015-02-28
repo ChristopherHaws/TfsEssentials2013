@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="Spiral.TfsEssentials.Controls.Merge.Incoming.IncomingChangesetsSectionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:Microsoft.TeamFoundation.Controls.WPF;assembly=Microsoft.TeamFoundation.Controls"
+             xmlns:tfs="clr-namespace:Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;assembly=Microsoft.TeamFoundation.Controls"
+             xmlns:converters="clr-namespace:Microsoft.TeamFoundation.Controls.WPF.Converters;assembly=Microsoft.TeamFoundation.Controls"
+             xmlns:local="clr-namespace:Spiral.TfsEssentials.Controls.Merge"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<FrameworkElement.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<wpf:TFCachedResourceDictionary Source="pack://application:,,,/Microsoft.TeamFoundation.Controls;component/WPF/SharedResources.xaml"/>
+				<!--<wpf:TFCachedResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>-->
+				<ResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<converters:NonEmptyStringToVisibleConverter x:Key="NonEmptyStringToVisibleConverter"/>
+			<local:ChangesetsSectionListViewMaxHeightConverter x:Key="MergeSectionListViewMaxHeightConverter"/>
+		</ResourceDictionary>
+	</FrameworkElement.Resources>
+	<Grid Margin="0">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<WrapPanel Grid.Row="0" Margin="6,0,6,6" HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Horizontal">
+			<tfs:TextLink Text="Pull" Localization.Attributes="Text (Modifiable Readable Text)" Command="{Binding Path=PullCommand}"/>
+		</WrapPanel>
+		<StackPanel Grid.Row="1">
+			<Border Margin="6,0,6,6" Visibility="{Binding Path=NoChangesetsMessage, Converter={StaticResource NonEmptyStringToVisibleConverter}}">
+				<TextBlock Margin="0" TextWrapping="Wrap" Foreground="{DynamicResource SubduedTextBrushKey}" Text="{Binding Path=NoChangesetsMessage}"/>
+			</Border>
+			<tfs:IndentedItemListView RerouteMouseWheel="true" wpf:ScrollViewHelper.ReroutePriorAndNext="true" HorizontalContentAlignment="Stretch" SelectionMode="Single" BorderThickness="1"
+                                  wpf:ListViewHelper.ShowBorderOnScrollBarVisibility="true"
+                                  wpf:ListViewHelper.ScrollbarVisibleBorderBrush="{StaticResource TextBoxBorderBrushKey}"
+                                  ItemTemplate="{StaticResource ChangesetsTemplate}"
+                                  ItemsSource="{Binding Path=ChangesetsItemsSource}"
+                                  MaxHeight="{Binding Path=Model.IncomingOutgoingChangesetsMaxCount, Converter={StaticResource MergeSectionListViewMaxHeightConverter}}"
+                                  AutomationProperties.Name="Incoming Changesets">
+				<wpf:MultiSelectionHelper.SelectedItems>
+					<Binding Path="SelectedItems"/>
+				</wpf:MultiSelectionHelper.SelectedItems>
+			</tfs:IndentedItemListView>
+		</StackPanel>
+	</Grid>
+</UserControl>
