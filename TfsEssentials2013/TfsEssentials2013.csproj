@@ -146,6 +146,11 @@
     <Compile Include="Controls\Merge\Incoming\IncomingChangesetsSectionViewModel.cs" />
     <Compile Include="Controls\Merge\ChangesetsSectionListViewMaxHeightConverter.cs" />
     <Compile Include="Controls\Merge\ChangesetsSectionViewModelBase.cs" />
+    <Compile Include="Controls\Merge\Outgoing\OutgoingChangesetsSection.cs" />
+    <Compile Include="Controls\Merge\Outgoing\OutgoingChangesetsSectionView.xaml.cs">
+      <DependentUpon>OutgoingChangesetsSectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Merge\Outgoing\OutgoingChangesetsSectionViewModel.cs" />
     <Compile Include="Controls\TfsBranch.cs" />
     <Compile Include="Controls\TfsBranchViewModel.cs" />
     <Compile Include="Controls\TfsChangeset.cs" />
@@ -203,6 +208,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Merge\MergePageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Merge\Outgoing\OutgoingChangesetsSectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
