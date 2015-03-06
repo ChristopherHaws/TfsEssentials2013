@@ -29,6 +29,7 @@ namespace Spiral.TfsEssentials.Controls.Merge
 			: base(serviceProvider, taskFactory)
 		{
 			TeamFoundationTrace.Verbose(TraceKeywordSets.TeamExplorer, "Entering ChangesetModel constructor");
+			this.Branch = new TfsBranch();
 		}
 
 		[ValueDependsOnProperty("Branch")]
@@ -57,7 +58,7 @@ namespace Spiral.TfsEssentials.Controls.Merge
 			}
 			set
 			{
-				this.SetAndRaisePropertyChanged<TfsBranch>(ref this.branch, value, "Branch");
+				this.SetAndRaisePropertyChanged(ref this.branch, value, "Branch");
 			}
 		}
 

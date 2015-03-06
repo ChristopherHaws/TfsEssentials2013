@@ -32,12 +32,30 @@ namespace Spiral.TfsEssentials.Controls.Merge
 			return viewModel;
 		}
 
+		protected override void InitializeModel(PageInitializeEventArgs e)
+		{
+			base.InitializeModel(e);
+
+			var model = this.Model as MergeModel;
+			if (model == null)
+			{
+				return;
+			}
+
+			var service = e.ServiceProvider.GetService<IServiceContainer>();
+			if (service == null)
+			{
+				return;
+			}
+
+			service.AddService(typeof(MergeModel), model);
+		}
+
 		public override void Dispose()
 		{
 			base.Dispose();
 
 			var service = this.ServiceProvider.GetService<IServiceContainer>();
-
 			if (service == null)
 			{
 				return;

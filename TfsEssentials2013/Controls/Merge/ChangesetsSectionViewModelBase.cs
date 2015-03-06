@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using Microsoft.TeamFoundation.Common.Internal;
+using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.MVVM;
 
@@ -13,9 +15,31 @@ namespace Spiral.TfsEssentials.Controls.Merge
 
 		protected ChangesetsSectionViewModelBase()
 		{
-			ChangesetsItemsSource = new BatchedObservableCollection<TfsChangeset>();
+			ChangesetsItemsSource = new BatchedObservableCollection<TfsChangeset>()
+			{
+				new TfsChangeset(),
+				new TfsChangeset(),
+				new TfsChangeset(),
+				new TfsChangeset()
+			};
+
+			SelectedItems = new ObservableCollection<TfsBranchViewModel>()
+			{
+				new TfsBranchViewModel(),
+				new TfsBranchViewModel()
+			};
+
 			this.UpdateTitle();
 			this.UpdateItemsSource();
+		}
+
+		/// <summary>
+		/// Initialize this section.
+		/// </summary>
+		public override void Initialize(object sender, SectionInitializeEventArgs e)
+		{
+			base.Initialize(sender, e);
+			this.Model = e.ServiceProvider.GetService<MergeModel>();
 		}
 
 		public virtual MergeModel Model
@@ -42,8 +66,7 @@ namespace Spiral.TfsEssentials.Controls.Merge
 			}
 			private set
 			{
-				this.selectedItems = value;
-				this.RaisePropertyChanged("SelectedItems");
+				this.SetAndRaisePropertyChanged(ref this.selectedItems, value, "SelectedItems");
 			}
 		}
 

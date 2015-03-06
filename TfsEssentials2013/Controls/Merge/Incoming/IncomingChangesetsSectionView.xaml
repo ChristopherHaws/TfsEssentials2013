@@ -37,8 +37,7 @@
                                   wpf:ListViewHelper.ScrollbarVisibleBorderBrush="{StaticResource TextBoxBorderBrushKey}"
                                   ItemTemplate="{StaticResource ChangesetsTemplate}"
                                   ItemsSource="{Binding Path=ChangesetsItemsSource}"
-                                  MaxHeight="{Binding Path=Model.IncomingOutgoingChangesetsMaxCount, Converter={StaticResource MergeSectionListViewMaxHeightConverter}}"
-                                  AutomationProperties.Name="Incoming Changesets">
+                                  MaxHeight="{Binding Path=Model.IncomingOutgoingChangesetsMaxCount, Converter={StaticResource MergeSectionListViewMaxHeightConverter}}">
 				<wpf:MultiSelectionHelper.SelectedItems>
 					<Binding Path="SelectedItems"/>
 				</wpf:MultiSelectionHelper.SelectedItems>
