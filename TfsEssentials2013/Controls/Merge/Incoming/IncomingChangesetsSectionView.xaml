@@ -13,8 +13,8 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<wpf:TFCachedResourceDictionary Source="pack://application:,,,/Microsoft.TeamFoundation.Controls;component/WPF/SharedResources.xaml"/>
-				<!--<wpf:TFCachedResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>-->
-				<ResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>
+				<wpf:TFCachedResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>
+				<!--<ResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>-->
 			</ResourceDictionary.MergedDictionaries>
 			<converters:NonEmptyStringToVisibleConverter x:Key="NonEmptyStringToVisibleConverter"/>
 			<local:ChangesetsSectionListViewMaxHeightConverter x:Key="MergeSectionListViewMaxHeightConverter"/>
@@ -33,14 +33,12 @@
 				<TextBlock Margin="0" TextWrapping="Wrap" Foreground="{DynamicResource SubduedTextBrushKey}" Text="{Binding Path=NoChangesetsMessage}"/>
 			</Border>
 			<tfs:IndentedItemListView RerouteMouseWheel="true" wpf:ScrollViewHelper.ReroutePriorAndNext="true" HorizontalContentAlignment="Stretch" SelectionMode="Single" BorderThickness="1"
-                                  wpf:ListViewHelper.ShowBorderOnScrollBarVisibility="true"
-                                  wpf:ListViewHelper.ScrollbarVisibleBorderBrush="{StaticResource TextBoxBorderBrushKey}"
-                                  ItemTemplate="{StaticResource ChangesetsTemplate}"
-                                  ItemsSource="{Binding Path=ChangesetsItemsSource}"
-                                  MaxHeight="{Binding Path=Model.IncomingOutgoingChangesetsMaxCount, Converter={StaticResource MergeSectionListViewMaxHeightConverter}}">
-				<wpf:MultiSelectionHelper.SelectedItems>
-					<Binding Path="SelectedItems"/>
-				</wpf:MultiSelectionHelper.SelectedItems>
+									  wpf:ListViewHelper.ShowBorderOnScrollBarVisibility="true"
+									  wpf:ListViewHelper.ScrollbarVisibleBorderBrush="{StaticResource TextBoxBorderBrushKey}"
+									  ItemTemplate="{StaticResource ChangesetsTemplate}"
+									  ItemsSource="{Binding Path=ChangesetsItemsSource}"
+									  MaxHeight="{Binding Path=Model.IncomingOutgoingChangesetsMaxCount, Converter={StaticResource MergeSectionListViewMaxHeightConverter}}"
+									  wpf:MultiSelectionHelper.SelectedItems="{Binding Path=SelectedItems}">
 			</tfs:IndentedItemListView>
 		</StackPanel>
 	</Grid>
