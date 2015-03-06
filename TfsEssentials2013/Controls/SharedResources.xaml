@@ -12,7 +12,7 @@
 	<controls:ChangesetToolTipMessageConverter x:Key="ChangesetToolTipMessageConverter"/>
 	<converters:TrueToVisibleConverter x:Key="TrueToVisibleConverter"/>
 	
-	<Style x:Key="InfoTextStyle" x:Uid="InfoTextStyle" TargetType="{x:Type TextBlock}">
+	<Style x:Key="InfoTextStyle" TargetType="{x:Type TextBlock}">
 		<Style.Triggers>
 			<MultiDataTrigger>
 				<MultiDataTrigger.Conditions>
@@ -23,9 +23,15 @@
 			</MultiDataTrigger>
 		</Style.Triggers>
 	</Style>
-	
-	<DataTemplate x:Key="ChangesetsTemplate" x:Uid="ChangesetsDataTemplate">
-		<Grid x:Uid="ChangesetsItemGrid" ToolTipService.ShowDuration="20000" Margin="0,0,6,0">
+
+	<DrawingBrush x:Key="RightArrowBrush" Stretch="Uniform">
+		<DrawingBrush.Drawing>
+			<GeometryDrawing Brush="{StaticResource ActionLinkBrushKey}" Geometry="M 1,1 L 5,1 5,0 7,2 5,4 5,3 1,3 Z"/>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+
+	<DataTemplate x:Key="ChangesetsTemplate">
+		<Grid ToolTipService.ShowDuration="20000" Margin="0,0,6,0">
 			<FrameworkElement.ToolTip>
 				<ToolTip Placement="Left">
 					<Grid>
@@ -34,42 +40,159 @@
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
-							<RowDefinition x:Uid="ChangesetIdRow" Height="Auto"/>
-							<RowDefinition x:Uid="AuthorRow" Height="Auto"/>
-							<RowDefinition x:Uid="AuthoredTimeRow" Height="Auto"/>
-							<RowDefinition x:Uid="MessageRow_1" Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
 						</Grid.RowDefinitions>
-						<TextBlock x:Uid="ChangesetTooltipIdLabel" Grid.Row="0" Grid.Column="0" Text="Changeset: " Localization.Attributes="Text (Modifiable Readable Text)"/>
-						<TextBlock x:Uid="ChangesetTooltipIdValue" Grid.Row="0" Grid.Column="1" Localization.Attributes="Text (Unmodifiable Readable Text)" Text="{Binding Path=Id}"/>
-						<TextBlock x:Uid="ChangesetTooltipAuthorLabel" Grid.Row="1" Grid.Column="0" Text="Author: " Localization.Attributes="Text (Modifiable Readable Text)"/>
-						<TextBlock x:Uid="ChangesetTooltipAuthorValue" Grid.Row="1" Grid.Column="1" Localization.Attributes="Text (Unmodifiable Readable Text)" Text="{Binding Converter={StaticResource ChangesetToolTipAuthorConverter}}"/>
-						<TextBlock x:Uid="ChangesetTooltipDateLabel" Grid.Row="2" Grid.Column="0" Text="Date: " Localization.Attributes="Text (Modifiable Readable Text)"/>
-						<TextBlock x:Uid="ChangesetTooltipDateValue" Grid.Row="2" Grid.Column="1" Localization.Attributes="Text (Unmodifiable Readable Text)" Text="{Binding Path=AuthoredTime, Converter={StaticResource DateTimeFormatConverter}, Mode=OneWay}"/>
-						<TextBlock x:Uid="ChangesetTooltipMessageValue" Margin="0,12,0,0" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Localization.Attributes="Text (Unmodifiable Readable Text)"
-                       Text="{Binding Converter={StaticResource ChangesetToolTipMessageConverter}}"/>
+						<TextBlock Grid.Row="0" Grid.Column="0" Text="Changeset: "/>
+						<TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=Id}"/>
+						<TextBlock Grid.Row="1" Grid.Column="0" Text="Author: "/>
+						<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Converter={StaticResource ChangesetToolTipAuthorConverter}}"/>
+						<TextBlock Grid.Row="2" Grid.Column="0" Text="Date: "/>
+						<TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=AuthoredTime, Converter={StaticResource DateTimeFormatConverter}, Mode=OneWay}"/>
+						<TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,12,0,0" TextWrapping="Wrap" Text="{Binding Converter={StaticResource ChangesetToolTipMessageConverter}}"/>
 					</Grid>
 				</ToolTip>
 			</FrameworkElement.ToolTip>
 			<Grid.RowDefinitions>
-				<RowDefinition x:Uid="messageRow_2" Height="Auto"/>
-				<RowDefinition x:Uid="detailsRow" Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition x:Uid="avatarColumn" Width="Auto"/>
-				<ColumnDefinition x:Uid="ChangesetDataColumn" Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<!--<Image x:Uid="avatarImage" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Margin="1,0,0,0" Stretch="Uniform" Height="36" Width="36" Source="{Binding Path=AuthorAvatar, Converter={StaticResource ImageConverter}}"/>-->
-			<TextBlock x:Uid="ChangesetMessageText" Grid.Row="0" Grid.Column="1" Margin="6,3,0,3" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Text="{Binding Path=Comments, Mode=OneWay}"/>
+			<!--<Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Margin="1,0,0,0" Stretch="Uniform" Height="36" Width="36" Source="{Binding Path=AuthorAvatar, Converter={StaticResource ImageConverter}}"/>-->
+			<TextBlock Grid.Row="0" Grid.Column="1" Margin="6,3,0,3" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Text="{Binding Path=Comments, Mode=OneWay}"/>
 			<Grid Row="1" Column="1" Margin="0">
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition x:Uid="authorNameCol" Width="*"/>
-					<ColumnDefinition x:Uid="dateCol" Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
-				<TextBlock x:Uid="authorNameText" Margin="6,0,0,0" Grid.Column="0" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Style="{StaticResource InfoTextStyle}"
+				<TextBlock Margin="6,0,0,0" Grid.Column="0" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Style="{StaticResource InfoTextStyle}"
 						   Text="{Binding Path=AuthorName, Mode=OneWay}"/>
-				<TextBlock x:Uid="dateText" Grid.Column="1" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Style="{StaticResource InfoTextStyle}"
+				<TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Style="{StaticResource InfoTextStyle}"
 						   Text="{Binding Path=AuthoredTime, Converter={StaticResource DateTimeFormatConverter}, ConverterParameter=Friendly, Mode=OneWay}"/>
 			</Grid>
 		</Grid>
 	</DataTemplate>
+
+	<Style x:Key="ComboBoxReadonlyToggleButton" TargetType="{x:Type ToggleButton}">
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="IsTabStop" Value="false"/>
+		<Setter Property="Focusable" Value="false"/>
+		<Setter Property="ClickMode" Value="Press"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ToggleButton}">
+					<Grid Background="Transparent">
+						<Border x:Name="Bd"
+								Background="{TemplateBinding Control.Background}"
+								BorderBrush="{TemplateBinding Control.BorderBrush}"
+								BorderThickness="{TemplateBinding Control.BorderThickness}"
+								HorizontalAlignment="Right"
+								Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
+							<Path x:Name="ArrowPath" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0,0 L 4,4 8,0 Z" Fill="{TemplateBinding Control.Foreground}"/>
+						</Border>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="UIElement.IsMouseOver" Value="true">
+							<Setter Value="{StaticResource ArrowHighlightBrushKey}" Property="Control.Foreground"/>
+						</Trigger>
+						<Trigger Property="ToggleButton.IsChecked" Value="true">
+							<Setter TargetName="Bd" Value="{StaticResource ItemSelectedBrushKey}" Property="Border.Background"/>
+							<Setter Value="{StaticResource ItemSelectedTextBrushKey}" Property="Control.Foreground"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<Style TargetType="{x:Type ComboBoxItem}">
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="Padding" Value="6,1,6,2"/>
+		<Setter Property="BorderThickness" Value="0,1,0,1"/>
+		<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBoxTextBrushKey}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ComboBoxItem}">
+					<Border x:Name="Bd"
+							Background="{TemplateBinding Control.Background}"
+							BorderBrush="{TemplateBinding Control.BorderBrush}"
+							BorderThickness="{TemplateBinding Control.BorderThickness}"
+							Padding="{TemplateBinding Control.Padding}">
+						<ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="ComboBoxItem.IsHighlighted" Value="true">
+							<Setter TargetName="Bd" Value="{StaticResource MenuHoverBackgroundBrushKey}" Property="Border.Background"/>
+							<Setter Value="{StaticResource MenuHoverTextBrushKey}" Property="Control.Foreground"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
+	<Style x:Key="PlainComboBox" TargetType="{x:Type ComboBox}">
+		<Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisualStyle}"/>
+		<Setter Property="Foreground" Value="{StaticResource TextBoxTextBrushKey}"/>
+		<Setter Property="Background" Value="{StaticResource TextBoxBrushKey}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrushKey}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ComboBox}">
+					<Border SnapsToDevicePixels="true"
+							Background="{TemplateBinding Control.Background}"
+							BorderBrush="{TemplateBinding Control.BorderBrush}"
+							BorderThickness="1">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+							</Grid.ColumnDefinitions>
+							<Popup Grid.ColumnSpan="2"
+								   AllowsTransparency="true"
+								   PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+								   Placement="Bottom"
+								   IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+								   MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+								<Border BorderThickness="1" BorderBrush="{StaticResource MenuBorderBrushKey}" Background="{StaticResource MenuBackgroundBrushKey}">
+									<ScrollViewer>
+										<Grid RenderOptions.ClearTypeHint="Enabled">
+											<Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+												<Rectangle Fill="{Binding Background, ElementName=DropDownBorder}"
+														   Height="{Binding ActualHeight, ElementName=DropDownBorder}"
+														   Width="{Binding ActualWidth, ElementName=DropDownBorder}"/>
+											</Canvas>
+											<ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"/>
+										</Grid>
+									</ScrollViewer>
+								</Border>
+							</Popup>
+							<ToggleButton Grid.ColumnSpan="2" Grid.Column="0"
+										  BorderBrush="{TemplateBinding Control.BorderBrush}"
+										  Background="{TemplateBinding Control.Background}"
+										  Style="{StaticResource ComboBoxReadonlyToggleButton}"
+										  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+							<ContentPresenter Grid.Column="0"
+											  ContentTemplate="{TemplateBinding ComboBox.SelectionBoxItemTemplate}"
+											  ContentTemplateSelector="{TemplateBinding ItemsControl.ItemTemplateSelector}"
+											  Content="{TemplateBinding ComboBox.SelectionBoxItem}"
+											  ContentStringFormat="{TemplateBinding ComboBox.SelectionBoxItemStringFormat}"
+											  HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+											  IsHitTestVisible="false"
+											  Margin="{TemplateBinding Control.Padding}"
+											  SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+											  VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"/>
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 </ResourceDictionary>
