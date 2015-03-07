@@ -136,32 +136,37 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\BranchDropDownViewModel.cs" />
-    <Compile Include="Controls\ChangesetToolTipAuthorConverter.cs" />
-    <Compile Include="Controls\ChangesetToolTipMessageConverter.cs" />
-    <Compile Include="Controls\DateTimeFormatConverter.cs" />
-    <Compile Include="Controls\Merge\Incoming\IncomingChangesetsSection.cs" />
-    <Compile Include="Controls\Merge\Incoming\IncomingChangesetsSectionView.xaml.cs">
+    <Compile Include="Components\IncomingChangesetsSection.cs" />
+    <Compile Include="Components\MergeNavigationItem.cs" />
+    <Compile Include="Components\MergePage.cs" />
+    <Compile Include="Components\OutgoingChangesetsSection.cs" />
+    <Compile Include="Components\TfsTeamExplorerPageBase.cs" />
+    <Compile Include="Converters\ChangesetsSectionListViewHeightConverter.cs" />
+    <Compile Include="Converters\ChangesetToolTipAuthorConverter.cs" />
+    <Compile Include="Converters\ChangesetToolTipMessageConverter.cs" />
+    <Compile Include="Converters\DateTimeFormatConverter.cs" />
+    <Compile Include="Managers\IAsyncWorkManager.cs" />
+    <Compile Include="Models\MergeModel.cs" />
+    <Compile Include="Models\TfsBranchModel.cs" />
+    <Compile Include="Models\TfsChangesetModel.cs" />
+    <Compile Include="Models\TfsTeamExplorerModelBase.cs" />
+    <Compile Include="Providers\TfsBranchProvider.cs" />
+    <Compile Include="ViewModels\BranchDropDownViewModel.cs" />
+    <Compile Include="ViewModels\ChangesetsSectionViewModelBase.cs" />
+    <Compile Include="ViewModels\IncomingChangesetsSectionViewModel.cs" />
+    <Compile Include="ViewModels\MergePageViewModel.cs" />
+    <Compile Include="ViewModels\OutgoingChangesetsSectionViewModel.cs" />
+    <Compile Include="ViewModels\TfsBranchViewModel.cs" />
+    <Compile Include="Views\IncomingChangesetsSectionView.xaml.cs">
       <DependentUpon>IncomingChangesetsSectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Merge\Incoming\IncomingChangesetsSectionViewModel.cs" />
-    <Compile Include="Controls\Merge\ChangesetsSectionListViewMaxHeightConverter.cs" />
-    <Compile Include="Controls\Merge\ChangesetsSectionViewModelBase.cs" />
-    <Compile Include="Controls\Merge\Outgoing\OutgoingChangesetsSection.cs" />
-    <Compile Include="Controls\Merge\Outgoing\OutgoingChangesetsSectionView.xaml.cs">
+    <Compile Include="Views\MergePageView.xaml.cs">
+      <DependentUpon>MergePageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OutgoingChangesetsSectionView.xaml.cs">
       <DependentUpon>OutgoingChangesetsSectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Merge\Outgoing\OutgoingChangesetsSectionViewModel.cs" />
-    <Compile Include="Controls\TfsBranch.cs" />
-    <Compile Include="Controls\TfsBranchViewModel.cs" />
-    <Compile Include="Controls\TfsChangeset.cs" />
-    <Compile Include="Providers\TfsBranchProvider.cs" />
-    <Compile Include="WPF\TeamExplorer\NotifyPropertyChangedBase.cs" />
-    <Compile Include="WPF\TeamExplorer\TeamExplorerBase.cs" />
-    <Compile Include="WPF\TeamExplorer\TeamExplorerBaseNavigationItem.cs" />
-    <Compile Include="WPF\TeamExplorer\TfsTeamExplorerPageBase.cs" />
-    <Compile Include="WPF\TeamExplorer\TfsTeamExplorerModelBase.cs" />
-    <Compile Include="Controls\Merge\MergeModel.cs" />
+    <Compile Include="WPF\NotifyPropertyChangedBase.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -171,12 +176,6 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TfsEssentialsPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controls\Merge\MergeNavigationItem.cs" />
-    <Compile Include="Controls\Merge\MergePageViewModel.cs" />
-    <Compile Include="Controls\Merge\MergePageView.xaml.cs">
-      <DependentUpon>MergePageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Merge\MergePage.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
@@ -205,21 +204,21 @@
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Merge\Incoming\IncomingChangesetsSectionView.xaml">
+    <Page Include="Resources\SharedResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Merge\MergePageView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\IncomingChangesetsSectionView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Merge\Outgoing\OutgoingChangesetsSectionView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\MergePageView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\SharedResources.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\OutgoingChangesetsSectionView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup />
