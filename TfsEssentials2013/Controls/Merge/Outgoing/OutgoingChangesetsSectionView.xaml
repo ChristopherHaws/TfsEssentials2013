@@ -13,8 +13,8 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<wpf:TFCachedResourceDictionary Source="pack://application:,,,/Microsoft.TeamFoundation.Controls;component/WPF/SharedResources.xaml"/>
-				<!--<wpf:TFCachedResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>-->
-				<ResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>
+				<wpf:TFCachedResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>
+				<!--<ResourceDictionary Source="pack://application:,,,/Spiral.TfsEssentials2013;component/Controls/SharedResources.xaml"/>-->
 			</ResourceDictionary.MergedDictionaries>
 			<converters:NonEmptyStringToVisibleConverter x:Key="NonEmptyStringToVisibleConverter"/>
 			<local:ChangesetsSectionListViewMaxHeightConverter x:Key="MergeSectionListViewMaxHeightConverter"/>

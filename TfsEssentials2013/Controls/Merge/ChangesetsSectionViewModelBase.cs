@@ -8,7 +8,7 @@ namespace Spiral.TfsEssentials.Controls.Merge
 {
 	internal abstract class ChangesetsSectionViewModelBase : TeamExplorerSectionViewModelBase
 	{
-		private ObservableCollection<TfsBranchViewModel> selectedItems;
+		private ObservableCollection<TfsChangeset> selectedItems = new ObservableCollection<TfsChangeset>();
 		private MergeModel model;
 		private BatchedObservableCollection<TfsChangeset> changesetsItemsSource;
 		private string noChangesetsMessage;
@@ -21,12 +21,6 @@ namespace Spiral.TfsEssentials.Controls.Merge
 				new TfsChangeset(),
 				new TfsChangeset(),
 				new TfsChangeset()
-			};
-
-			SelectedItems = new ObservableCollection<TfsBranchViewModel>()
-			{
-				new TfsBranchViewModel(),
-				new TfsBranchViewModel()
 			};
 
 			this.UpdateTitle();
@@ -58,7 +52,7 @@ namespace Spiral.TfsEssentials.Controls.Merge
 			}
 		}
 
-		public ObservableCollection<TfsBranchViewModel> SelectedItems
+		public ObservableCollection<TfsChangeset> SelectedItems
 		{
 			get
 			{
