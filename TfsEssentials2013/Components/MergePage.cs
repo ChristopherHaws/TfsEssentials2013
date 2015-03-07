@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.Design;
+﻿using System.ComponentModel.Composition;
+using System.ComponentModel.Design;
 using Microsoft.TeamFoundation.Common.Internal;
 using Microsoft.TeamFoundation.Controls;
 using Spiral.TfsEssentials.Models;
+using Spiral.TfsEssentials.Providers;
 using Spiral.TfsEssentials.ViewModels;
 
 namespace Spiral.TfsEssentials.Components
@@ -11,10 +13,14 @@ namespace Spiral.TfsEssentials.Components
 	{
 		public const string PageId = "6EF9B9F7-71EE-4B9A-ACCF-9447536A9765";
 
-		public MergePage()
-        {
+		private readonly TfsBranchProvider tfsBranchProvider;
+
+		[ImportingConstructor]
+		public MergePage([Import]TfsBranchProvider tfsBranchProvider)
+		{
+			this.tfsBranchProvider = tfsBranchProvider;
 			this.Title = "Unsynced Merge";
-        }
+		}
 
 		protected override object CreateModel(PageInitializeEventArgs e)
 		{
@@ -29,7 +35,7 @@ namespace Spiral.TfsEssentials.Components
 
 		protected override ITeamExplorerPage CreateViewModel(PageInitializeEventArgs e)
 		{
-			var viewModel = new MergePageViewModel(this.Model as MergeModel);
+			var viewModel = new MergePageViewModel(this.Model as MergeModel, tfsBranchProvider);
 			return viewModel;
 		}
 

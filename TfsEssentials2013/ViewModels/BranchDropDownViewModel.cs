@@ -1,29 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.MVVM;
+using Spiral.TfsEssentials.Providers;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
+using Task = System.Threading.Tasks.Task;
 
 namespace Spiral.TfsEssentials.ViewModels
 {
 	internal class BranchDropDownViewModel : ViewModelBase
 	{
+		private readonly TfsBranchProvider tfsBranchProvider;
 		private string currentBranch;
 		private List<string> branches;
 
-		public BranchDropDownViewModel(TeamExplorerPageViewModelBase teamExplorerPageViewModelBase)
+		public BranchDropDownViewModel(TeamExplorerPageViewModelBase teamExplorerPageViewModelBase, TfsBranchProvider tfsBranchProvider)
 			: base(teamExplorerPageViewModelBase)
 		{
-			//TODO: Remove this mock logic
-			Branches = new List<string>
-			{
-				"Main",
-				"Branch 1",
-				"Branch 2"
-			};
+			this.tfsBranchProvider = tfsBranchProvider;
+			teamExplorerPageViewModelBase.IsBusy = true;
 
-			this.CurrentBranch = this.Branches.First();
+			Task.Run(async delegate
+			{
+				// Now you’re on a separate thread.
+				var branchNames = tfsBranchProvider.GetBranchNames();
+
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+				Branches = branchNames;
+				this.CurrentBranch = this.Branches.FirstOrDefault();
+				teamExplorerPageViewModelBase.IsBusy = false;
+			});
 
 			SelectBranchCommand = new RelayCommand(SelectBranch);
 		}

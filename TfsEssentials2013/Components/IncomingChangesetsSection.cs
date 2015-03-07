@@ -1,6 +1,7 @@
 using System.ComponentModel.Composition;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
+using Spiral.TfsEssentials.Providers;
 using Spiral.TfsEssentials.ViewModels;
 
 namespace Spiral.TfsEssentials.Components

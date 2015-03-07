@@ -8,14 +8,17 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.VisualStudio.Shell;
+using Spiral.TfsEssentials.Extentions;
+using Spiral.TfsEssentials.Providers;
 
 namespace Spiral.TfsEssentials.Components
 {
 	[TeamExplorerNavigationItem(MergeNavigationItem.LinkId, 1000)]
-	public class MergeNavigationItem : TeamExplorerNavigationItemBase
+	internal class MergeNavigationItem : TeamExplorerNavigationItemBase
 	{
 		public const string LinkId = "5E7F3922-32ED-4621-ACEB-D7C8D80CA3EE";
 
@@ -24,7 +27,8 @@ namespace Spiral.TfsEssentials.Components
 		private readonly UIContext tfsProviderContext;
 
 		[ImportingConstructor]
-		public MergeNavigationItem([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
+		public MergeNavigationItem(
+			[Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
 		{
 			this.serviceProvider = serviceProvider;
 			this.Text = "Merge";
@@ -73,22 +77,8 @@ namespace Spiral.TfsEssentials.Components
 
 		public override void Execute()
 		{
-			var teamExplorer = GetService<ITeamExplorer>();
+			var teamExplorer = serviceProvider.GetService<ITeamExplorer>();
 			teamExplorer.NavigateToPage(new Guid(MergePage.PageId), null);
-		}
-
-		/// <summary>
-		/// Get the requested service from the service provider.
-		/// </summary>
-		public T GetService<T>()
-		{
-			Debug.Assert(this.serviceProvider != null, "GetService<T> called before service provider is set");
-			if (this.serviceProvider != null)
-			{
-				return (T)this.serviceProvider.GetService(typeof(T));
-			}
-
-			return default(T);
 		}
 	}
 }

@@ -66,6 +66,7 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.12.0" />
+    <Reference Include="Microsoft.VisualStudio.Threading, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -145,11 +146,13 @@
     <Compile Include="Converters\ChangesetToolTipAuthorConverter.cs" />
     <Compile Include="Converters\ChangesetToolTipMessageConverter.cs" />
     <Compile Include="Converters\DateTimeFormatConverter.cs" />
+    <Compile Include="Extentions\ServiceProviderExtentions.cs" />
     <Compile Include="Managers\IAsyncWorkManager.cs" />
     <Compile Include="Models\MergeModel.cs" />
     <Compile Include="Models\TfsBranchModel.cs" />
     <Compile Include="Models\TfsChangesetModel.cs" />
     <Compile Include="Models\TfsTeamExplorerModelBase.cs" />
+    <Compile Include="Providers\TeamExplorerProvider.cs" />
     <Compile Include="Providers\TfsBranchProvider.cs" />
     <Compile Include="ViewModels\BranchDropDownViewModel.cs" />
     <Compile Include="ViewModels\ChangesetsSectionViewModelBase.cs" />

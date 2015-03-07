@@ -5,6 +5,7 @@ using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.MVVM;
 using Spiral.TfsEssentials.Models;
+using Spiral.TfsEssentials.Providers;
 
 namespace Spiral.TfsEssentials.ViewModels
 {
@@ -39,10 +40,10 @@ namespace Spiral.TfsEssentials.ViewModels
 
 		public ICommand ViewPendingChangesCommand { get; private set; }
 
-		public MergePageViewModel(MergeModel model)
+		public MergePageViewModel(MergeModel model, TfsBranchProvider tfsBranchProvider)
 		{
 			this.Model = model;
-			this.BranchDropDownViewModel = new BranchDropDownViewModel(this);
+			this.BranchDropDownViewModel = new BranchDropDownViewModel(this, tfsBranchProvider);
 
 			ViewPendingChangesCommand = new RelayCommand(NavigateToPendingChangesPage);
 		}
