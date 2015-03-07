@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Common.Internal;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
@@ -34,6 +36,20 @@ namespace Spiral.TfsEssentials.WPF.TeamExplorer
 			service.AddService(typeof(TaskFactory), this.TaskFactory);
 		}
 
+		protected ITeamFoundationContext CurrentContext
+		{
+			get
+			{
+				var tfContextManager = GetService<ITeamFoundationContextManager>();
+				if (tfContextManager != null)
+				{
+					return tfContextManager.CurrentContext;
+				}
+
+				return null;
+			}
+		}
+
 		public override void Dispose()
 		{
 			base.Dispose();
@@ -58,6 +74,17 @@ namespace Spiral.TfsEssentials.WPF.TeamExplorer
 		public Task QueueWorkAsync(Action<CancellationToken> action)
 		{
 			return this.TaskFactory.StartNew((() => action(this.CancellationTokenSource.Token)));
+		}
+
+		public T GetService<T>()
+		{
+			Debug.Assert(this.ServiceProvider != null, "GetService<T> called before service provider is set");
+			if (this.ServiceProvider != null)
+			{
+				return (T)this.ServiceProvider.GetService(typeof(T));
+			}
+
+			return default(T);
 		}
 	}
 }

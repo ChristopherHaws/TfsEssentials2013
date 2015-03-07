@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Input;
+using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.MVVM;
 
@@ -49,7 +50,7 @@ namespace Spiral.TfsEssentials.Controls.Merge
 		{
 			try
 			{
-				TeamExplorerUtils.Instance.NavigateToPage(GuidList.TfsPendingChangesPageId, this.ServiceProvider, null);
+				TeamExplorerUtils.Instance.NavigateToPage(TeamExplorerPageIds.PendingChanges, this.ServiceProvider, null);
 			}
 			catch (Exception ex)
 			{

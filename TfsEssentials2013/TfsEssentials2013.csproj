@@ -155,6 +155,7 @@
     <Compile Include="Controls\TfsBranch.cs" />
     <Compile Include="Controls\TfsBranchViewModel.cs" />
     <Compile Include="Controls\TfsChangeset.cs" />
+    <Compile Include="Providers\TfsBranchProvider.cs" />
     <Compile Include="WPF\TeamExplorer\NotifyPropertyChangedBase.cs" />
     <Compile Include="WPF\TeamExplorer\TeamExplorerBase.cs" />
     <Compile Include="WPF\TeamExplorer\TeamExplorerBaseNavigationItem.cs" />
