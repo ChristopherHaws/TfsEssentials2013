@@ -26,7 +26,7 @@
 		</Grid.RowDefinitions>
 		<WrapPanel Grid.Row="0">
 			<TextBlock Margin="6,6,3,0" Foreground="{StaticResource SubduedTextBrushKey}" Text="Branch:" />
-			<tfs:DropDownLink Margin="3,6,3,0" Text="{Binding Path=BranchDropDownViewModel.CurrentBranchName}">
+			<tfs:DropDownLink Margin="3,6,3,0" Text="{Binding Path=BranchDropDownViewModel.SelectedBranchName}">
 				<tfs:DropDownLink.DropDownMenu>
 					<ContextMenu Placement="Bottom" StaysOpen="False" HasDropShadow="True"
 								 DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"

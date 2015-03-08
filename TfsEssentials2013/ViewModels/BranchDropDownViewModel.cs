@@ -14,7 +14,7 @@ namespace Spiral.TfsEssentials.ViewModels
 	{
 		private readonly TeamExplorerPageViewModelBase teamExplorerPageViewModelBase;
 		private readonly TfsBranchProvider tfsBranchProvider;
-		private BranchModel currentBranch;
+		private BranchModel selectedBranch;
 		private List<BranchModel> branches;
 
 		public BranchDropDownViewModel(TeamExplorerPageViewModelBase teamExplorerPageViewModelBase, TfsBranchProvider tfsBranchProvider)
@@ -42,29 +42,29 @@ namespace Spiral.TfsEssentials.ViewModels
 			//}
 
 			tfsBranchProvider.SetCurrentBranch(branch);
-			this.CurrentBranch = branch;
+			this.SelectedBranch = branch;
 		}
 
 		public ICommand SelectBranchCommand { get; private set; }
 
-		[ValueDependsOnProperty("CurrentBranch")]
-		public string CurrentBranchName
+		[ValueDependsOnProperty("SelectedBranch")]
+		public string SelectedBranchName
 		{
 			get
 			{
-				return CurrentBranch == null ? "No Branches" : CurrentBranch.Name;
+				return SelectedBranch == null ? "No Branches" : SelectedBranch.Name;
 			}
 		}
 
-		public BranchModel CurrentBranch
+		public BranchModel SelectedBranch
 		{
 			get
 			{
-				return currentBranch;
+				return selectedBranch;
 			}
 			set
 			{
-				SetAndRaisePropertyChanged(ref currentBranch, value, "CurrentBranch");
+				SetAndRaisePropertyChanged(ref selectedBranch, value, "SelectedBranch");
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace Spiral.TfsEssentials.ViewModels
 				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
 				Branches = currentBranches;
-				this.CurrentBranch = currentBranchName;
+				this.SelectedBranch = currentBranchName;
 				this.teamExplorerPageViewModelBase.IsBusy = false;
 			});
 		}
