@@ -148,6 +148,7 @@
     <Compile Include="Converters\DateTimeFormatConverter.cs" />
     <Compile Include="Extentions\ServiceProviderExtentions.cs" />
     <Compile Include="Managers\IAsyncWorkManager.cs" />
+    <Compile Include="Models\BranchModel.cs" />
     <Compile Include="Models\MergeModel.cs" />
     <Compile Include="Models\TfsBranchModel.cs" />
     <Compile Include="Models\TfsChangesetModel.cs" />

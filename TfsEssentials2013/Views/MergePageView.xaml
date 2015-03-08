@@ -33,7 +33,7 @@
 								 ItemsSource="{Binding Path=BranchDropDownViewModel.Branches}">
 						<ContextMenu.ItemContainerStyle>
 							<Style TargetType="MenuItem">
-								<Setter Property="Header" Value="{Binding}"></Setter>
+								<Setter Property="Header" Value="{Binding Path=Path}"></Setter>
 								<Setter Property="Command" Value="{Binding DataContext.BranchDropDownViewModel.SelectBranchCommand, RelativeSource={RelativeSource AncestorType=ContextMenu, Mode=FindAncestor}}"/>
 								<Setter Property="CommandParameter" Value="{Binding Path=.}"/>
 							</Style>

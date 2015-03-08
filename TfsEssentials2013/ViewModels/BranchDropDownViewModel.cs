@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.MVVM;
-using Spiral.TfsEssentials.Providers;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
+using Spiral.TfsEssentials.Models;
+using Spiral.TfsEssentials.Providers;
 using Task = System.Threading.Tasks.Task;
 
 namespace Spiral.TfsEssentials.ViewModels
@@ -16,8 +14,8 @@ namespace Spiral.TfsEssentials.ViewModels
 	{
 		private readonly TeamExplorerPageViewModelBase teamExplorerPageViewModelBase;
 		private readonly TfsBranchProvider tfsBranchProvider;
-		private string currentBranch;
-		private List<string> branches;
+		private BranchModel currentBranch;
+		private List<BranchModel> branches;
 
 		public BranchDropDownViewModel(TeamExplorerPageViewModelBase teamExplorerPageViewModelBase, TfsBranchProvider tfsBranchProvider)
 			: base(teamExplorerPageViewModelBase)
@@ -32,17 +30,16 @@ namespace Spiral.TfsEssentials.ViewModels
 
 		private void SelectBranch(object obj)
 		{
-			var branch = obj as string;
-
-			if (String.IsNullOrWhiteSpace(branch))
+			var branch = obj as BranchModel;
+			if (branch == null)
 			{
 				return;
 			}
 
-			if (!this.Branches.Contains(branch))
-			{
-				return;
-			}
+			//if (!this.Branches.Contains(branch))
+			//{
+			//	return;
+			//}
 
 			tfsBranchProvider.SetCurrentBranch(branch);
 			this.CurrentBranch = branch;
@@ -55,11 +52,11 @@ namespace Spiral.TfsEssentials.ViewModels
 		{
 			get
 			{
-				return String.IsNullOrWhiteSpace(CurrentBranch) ? "No Branches" : CurrentBranch;
+				return CurrentBranch == null ? "No Branches" : CurrentBranch.Name;
 			}
 		}
 
-		public string CurrentBranch
+		public BranchModel CurrentBranch
 		{
 			get
 			{
@@ -71,7 +68,7 @@ namespace Spiral.TfsEssentials.ViewModels
 			}
 		}
 
-		public List<string> Branches
+		public List<BranchModel> Branches
 		{
 			get
 			{
@@ -89,13 +86,12 @@ namespace Spiral.TfsEssentials.ViewModels
 
 			Task.Run(async delegate
 			{
-				// Now you’re on a separate thread.
-				var branchNames = tfsBranchProvider.GetBranchNames();
-				var currentBranchName = tfsBranchProvider.GetCurrentBranchName();
+				var currentBranches = tfsBranchProvider.GetBranches();
+				var currentBranchName = tfsBranchProvider.GetCurrentBranch();
 
 				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-				Branches = branchNames;
+				Branches = currentBranches;
 				this.CurrentBranch = currentBranchName;
 				this.teamExplorerPageViewModelBase.IsBusy = false;
 			});

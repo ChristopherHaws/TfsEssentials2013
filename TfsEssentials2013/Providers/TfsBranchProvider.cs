@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using Spiral.TfsEssentials.Models;
 
 namespace Spiral.TfsEssentials.Providers
 {
@@ -104,8 +105,27 @@ namespace Spiral.TfsEssentials.Providers
 				.ToList();
 		}
 
-		public string GetCurrentBranchName()
+		public List<BranchModel> GetBranches()
 		{
+			return this.Branches
+				.Where(x => !x.Properties.RootItem.IsDeleted)
+				.Select(x => new BranchModel()
+				{
+					Name = Path.GetFileName(x.Properties.RootItem.Item),
+					Path = x.Properties.RootItem.Item,
+					Description = x.Properties.Description,
+					Owner = x.Properties.OwnerDisplayName,
+					CreatedDate = x.DateCreated,
+					HasParent = x.Properties.ParentBranch != null,
+					HasChildren = x.ChildBranches.Any()
+				})
+				.ToList();
+		}
+
+		public BranchModel GetCurrentBranch()
+		{
+			var possibleBranches = GetBranches();
+
 			var teamProject = tfsVersionControlProvider.GetCurrentTeamProject();
 			if (teamProject == null)
 			{
@@ -113,45 +133,35 @@ namespace Spiral.TfsEssentials.Providers
 				return null;
 			}
 
-			var currentBranch = configurationManager.GetValue(teamProject, "MostRecentBranch");
+			var currentBranchName = configurationManager.GetValue(teamProject, "MostRecentBranch");
 
-			if (!String.IsNullOrWhiteSpace(currentBranch) && GetBranchNames().Contains(currentBranch))
+			if (!String.IsNullOrWhiteSpace(currentBranchName))
 			{
-				return currentBranch;
+				var possibleBranch = possibleBranches.FirstOrDefault(x => String.Equals(x.Name, currentBranchName, StringComparison.InvariantCultureIgnoreCase));
+				if (possibleBranch != null)
+				{
+					return possibleBranch;
+				}
 			}
 
-			var branch = this.Branches
-				.Where(s => !s.Properties.RootItem.IsDeleted && s.Properties.ParentBranch == null)
-				.OrderBy(s => s.DateCreated)
-				.Select(s => s.Properties.RootItem.Item)
+			var branch = possibleBranches
+				.Where(x => x.HasParent = false)
+				.OrderBy(x => x.CreatedDate)
 				.FirstOrDefault();
 
 			if (branch != null)
 			{
-				SetCurrentBranch(branch);
+				SetCurrentBranch(branch, teamProject);
 				return branch;
 			}
 
-			branch = this.Branches
-				.Where(s => !s.Properties.RootItem.IsDeleted)
-				.OrderBy(s => s.DateCreated)
-				.Select(s => s.Properties.RootItem.Item)
+			branch = possibleBranches
+				.OrderBy(x => x.CreatedDate)
 				.FirstOrDefault();
 
 			if (branch != null)
 			{
-				SetCurrentBranch(branch);
-				return branch;
-			}
-
-			branch = this.Branches
-				.OrderBy(s => s.DateCreated)
-				.Select(s => s.Properties.RootItem.Item)
-				.FirstOrDefault();
-
-			if (branch != null)
-			{
-				SetCurrentBranch(branch);
+				SetCurrentBranch(branch, teamProject);
 			}
 
 			return branch;
@@ -162,7 +172,7 @@ namespace Spiral.TfsEssentials.Providers
 			branches = null;
 		}
 
-		public void SetCurrentBranch(string currentBranch)
+		public void SetCurrentBranch(BranchModel currentBranch)
 		{
 			var teamProject = tfsVersionControlProvider.GetCurrentTeamProject();
 			if (teamProject == null)
@@ -171,7 +181,12 @@ namespace Spiral.TfsEssentials.Providers
 				return;
 			}
 
-			configurationManager.SetValue(teamProject, "MostRecentBranch", currentBranch);
+			SetCurrentBranch(currentBranch, teamProject);
+		}
+
+		public void SetCurrentBranch(BranchModel currentBranch, TeamProject teamProject)
+		{
+			configurationManager.SetValue(teamProject, "MostRecentBranch", currentBranch.Name);
 		}
 	}
 }
