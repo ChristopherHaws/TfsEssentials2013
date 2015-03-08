@@ -106,7 +106,14 @@ namespace Spiral.TfsEssentials.Providers
 
 		public string GetCurrentBranchName()
 		{
-			var currentBranch = configurationManager.GetValue("CurrentBranch");
+			var teamProject = tfsVersionControlProvider.GetCurrentTeamProject();
+			if (teamProject == null)
+			{
+				Debug.WriteLine("Could not find current team project.");
+				return null;
+			}
+
+			var currentBranch = configurationManager.GetValue(teamProject, "MostRecentBranch");
 
 			if (!String.IsNullOrWhiteSpace(currentBranch) && GetBranchNames().Contains(currentBranch))
 			{
@@ -121,7 +128,7 @@ namespace Spiral.TfsEssentials.Providers
 
 			if (branch != null)
 			{
-				configurationManager.SetValue("CurrentBranch", branch);
+				SetCurrentBranch(branch);
 				return branch;
 			}
 
@@ -133,7 +140,7 @@ namespace Spiral.TfsEssentials.Providers
 
 			if (branch != null)
 			{
-				configurationManager.SetValue("CurrentBranch", branch);
+				SetCurrentBranch(branch);
 				return branch;
 			}
 
@@ -144,7 +151,7 @@ namespace Spiral.TfsEssentials.Providers
 
 			if (branch != null)
 			{
-				configurationManager.SetValue("CurrentBranch", branch);
+				SetCurrentBranch(branch);
 			}
 
 			return branch;
@@ -157,7 +164,14 @@ namespace Spiral.TfsEssentials.Providers
 
 		public void SetCurrentBranch(string currentBranch)
 		{
-			configurationManager.SetValue("CurrentBranch", currentBranch);
+			var teamProject = tfsVersionControlProvider.GetCurrentTeamProject();
+			if (teamProject == null)
+			{
+				Debug.WriteLine("Could not find current team project.");
+				return;
+			}
+
+			configurationManager.SetValue(teamProject, "MostRecentBranch", currentBranch);
 		}
 	}
 }

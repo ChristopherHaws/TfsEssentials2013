@@ -39,6 +39,12 @@ namespace Spiral.TfsEssentials.ViewModels
 				return;
 			}
 
+			if (!this.Branches.Contains(branch))
+			{
+				return;
+			}
+
+			tfsBranchProvider.SetCurrentBranch(branch);
 			this.CurrentBranch = branch;
 		}
 
@@ -61,12 +67,6 @@ namespace Spiral.TfsEssentials.ViewModels
 			}
 			set
 			{
-				if (!this.Branches.Contains(value))
-				{
-					return;
-				}
-
-				tfsBranchProvider.SetCurrentBranch(value);
 				SetAndRaisePropertyChanged(ref currentBranch, value, "CurrentBranch");
 			}
 		}

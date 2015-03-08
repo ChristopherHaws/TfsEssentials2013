@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using Microsoft.TeamFoundation.VersionControl.Client;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.Win32;
 using Spiral.TfsEssentials.Extentions;
@@ -21,7 +22,24 @@ namespace Spiral.TfsEssentials.Providers
 
 		public string GetValue(string key)
 		{
-			using (var registryKey = package.UserRegistryRoot.OpenSubKey(RootKey, false))
+			return GetValue(RootKey, key);
+		}
+
+		public string GetValue(TeamProject teamProject, string key)
+		{
+			var teamProjectKey = String.Format(@"{0}\Servers\{1}\Collections\{2}\{3}",
+				RootKey,
+				teamProject.TeamProjectCollection.DisplayName,
+				teamProject.TeamProjectCollection.CatalogNode.Resource.DisplayName,
+				teamProject.Name
+			);
+
+			return GetValue(teamProjectKey, key);
+		}
+
+		private string GetValue(string location, string key)
+		{
+			using (var registryKey = package.UserRegistryRoot.OpenSubKey(location, false))
 			{
 				if (registryKey == null)
 				{
@@ -35,9 +53,26 @@ namespace Spiral.TfsEssentials.Providers
 
 		public void SetValue(string key, string value)
 		{
-			EnsureRootKeyExists();
+			SetValue(RootKey, key, value);
+		}
 
-			using (var registryKey = package.UserRegistryRoot.OpenSubKey(RootKey, true))
+		public void SetValue(TeamProject teamProject, string key, string value)
+		{
+			var teamProjectKey = String.Format(@"{0}\Servers\{1}\Collections\{2}\{3}",
+				RootKey,
+				teamProject.TeamProjectCollection.DisplayName,
+				teamProject.TeamProjectCollection.CatalogNode.Resource.DisplayName,
+				teamProject.Name
+			);
+
+			SetValue(teamProjectKey, key, value);
+		}
+
+		private void SetValue(string location, string key, string value)
+		{
+			EnsureKeyExists(location);
+
+			using (var registryKey = package.UserRegistryRoot.OpenSubKey(location, true))
 			{
 				if (registryKey == null)
 				{
@@ -56,13 +91,13 @@ namespace Spiral.TfsEssentials.Providers
 			}
 		}
 
-		private void EnsureRootKeyExists()
+		private void EnsureKeyExists(string key)
 		{
-			using (var registryKey = package.UserRegistryRoot.OpenSubKey(RootKey))
+			using (var registryKey = package.UserRegistryRoot.OpenSubKey(key))
 			{
 				if (registryKey == null)
 				{
-					package.UserRegistryRoot.CreateSubKey(RootKey);
+					package.UserRegistryRoot.CreateSubKey(key);
 				}
 			}
 		}
