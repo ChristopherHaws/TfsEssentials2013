@@ -79,7 +79,7 @@ namespace Spiral.TfsEssentials.ViewModels
 				return;
 			}
 
-			this.Model.PropertyChanged += Model_PropertyChanged;
+			this.Model.PropertyChanged += ModelPropertyChanged;
 		}
 
 		protected override void UnsubcribeToModelEvents()
@@ -89,10 +89,10 @@ namespace Spiral.TfsEssentials.ViewModels
 				return;
 			}
 
-			this.Model.PropertyChanged -= Model_PropertyChanged;
+			this.Model.PropertyChanged -= ModelPropertyChanged;
 		}
 
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			switch (e.PropertyName)
 			{

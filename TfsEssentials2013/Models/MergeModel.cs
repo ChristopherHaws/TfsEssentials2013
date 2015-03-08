@@ -7,18 +7,18 @@ namespace Spiral.TfsEssentials.Models
 {
 	internal class MergeModel : TfsTeamExplorerModelBase
 	{
-		private bool _isRepositoryOperationInProgress;
-		private TfsBranchModel _branchModel;
+		private bool isRepositoryOperationInProgress;
+		private TfsBranchModel branchModel;
 
 		public bool IsRepositoryOperationInProgress
 		{
 			get
 			{
-				return _isRepositoryOperationInProgress;
+				return isRepositoryOperationInProgress;
 			}
 			set
 			{
-				this.SetAndRaisePropertyChanged(ref _isRepositoryOperationInProgress, value, "IsRepositoryOperationInProgress");
+				this.SetAndRaisePropertyChanged(ref isRepositoryOperationInProgress, value, "IsRepositoryOperationInProgress");
 			}
 		}
 
@@ -51,11 +51,11 @@ namespace Spiral.TfsEssentials.Models
 		{
 			get
 			{
-				return this._branchModel;
+				return this.branchModel;
 			}
 			set
 			{
-				this.SetAndRaisePropertyChanged(ref this._branchModel, value, "Branch");
+				this.SetAndRaisePropertyChanged(ref this.branchModel, value, "Branch");
 			}
 		}
 

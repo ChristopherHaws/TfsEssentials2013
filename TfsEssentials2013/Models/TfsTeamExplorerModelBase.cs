@@ -7,7 +7,7 @@ namespace Spiral.TfsEssentials.Models
 {
 	internal class TfsTeamExplorerModelBase : NotifyPropertyChangedDispatcherObject, IDisposable, IAsyncWorkManager
 	{
-		private bool _isBusy;
+		private bool isBusy;
 
 		protected IServiceProvider ServiceProvider { get; set; }
 
@@ -15,11 +15,11 @@ namespace Spiral.TfsEssentials.Models
 		{
 			get
 			{
-				return _isBusy;
+				return this.isBusy;
 			}
 			set
 			{
-				this.SetAndRaisePropertyChanged(ref _isBusy, value, "IsBusy");
+				this.SetAndRaisePropertyChanged(ref this.isBusy, value, "IsBusy");
 			}
 		}
 
