@@ -8,34 +8,57 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
-using Microsoft.VisualStudio.Shell;
-using Spiral.TfsEssentials.Extentions;
 
 namespace Spiral.TfsEssentials.Providers
 {
 	[Export]
 	internal class TfsBranchProvider
 	{
-		private readonly IServiceProvider serviceProvider;
+		private readonly TfsVersionControlProvider tfsVersionControlProvider;
+		private readonly PackageConfigurationManager configurationManager;
+		private Tuple<String, List<BranchObject>> branches;
 
-		protected ITeamFoundationContext TfsContext
+		private IEnumerable<BranchObject> Branches
 		{
 			get
 			{
-				var tfContextManager = this.serviceProvider.GetService<ITeamFoundationContextManager>();
-				if (tfContextManager == null)
+				var server = tfsVersionControlProvider.GetCurrentServer();
+				if (server == null)
 				{
-					return null;
+					Debug.WriteLine("Could not find current TFS server.");
+					return new List<BranchObject>();
 				}
 
-				return tfContextManager.CurrentContext;
+				var teamProject = tfsVersionControlProvider.GetCurrentTeamProject();
+				if (teamProject == null)
+				{
+					Debug.WriteLine("Could not find current team project.");
+					return new List<BranchObject>();
+				}
+
+				if (branches != null && teamProject.ServerItem == branches.Item1)
+				{
+					return branches.Item2;
+				}
+
+				var teamProjectBranches = server.QueryRootBranchObjects(RecursionType.Full)
+					.Where(s => s.Properties.RootItem.Item.StartsWith(teamProject.ServerItem))
+					.OrderBy(s => s.Properties.RootItem.Item)
+					.ToList();
+
+				branches = new Tuple<String, List<BranchObject>>(teamProject.ServerItem, teamProjectBranches);
+
+				return branches.Item2;
 			}
 		}
 
 		[ImportingConstructor]
-		public TfsBranchProvider([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
+		public TfsBranchProvider(
+			[Import] TfsVersionControlProvider tfsVersionControlProvider,
+			[Import] PackageConfigurationManager configurationManager)
 		{
-			this.serviceProvider = serviceProvider;
+			this.tfsVersionControlProvider = tfsVersionControlProvider;
+			this.configurationManager = configurationManager;
 		}
 
 		public string GetBranchName(string localPath)
@@ -75,30 +98,61 @@ namespace Spiral.TfsEssentials.Providers
 
 		public List<string> GetBranchNames()
 		{
-			var context = this.TfsContext;
-
-			if (context == null)
-			{
-				Debug.WriteLine("Could not find TFS context.");
-				return new List<string>();
-			}
-
-			if (!context.HasTeamProject)
-			{
-				Debug.WriteLine("No team project found.");
-				return new List<string>();
-			}
-
-			var server = context.TeamProjectCollection.GetService<VersionControlServer>();
-			var teamProject = server.GetTeamProject(context.TeamProjectName);
-
-			var branches = server.QueryRootBranchObjects(RecursionType.Full);
-
-			return branches
-				.Where(s => s.Properties.RootItem.Item.StartsWith(teamProject.ServerItem) && !s.Properties.RootItem.IsDeleted)
-				.Select(s => s.Properties.RootItem.Item)
-				.OrderBy(s => s)
+			return this.Branches
+				.Where(x => !x.Properties.RootItem.IsDeleted)
+				.Select(x => x.Properties.RootItem.Item)
 				.ToList();
+		}
+
+		public string GetCurrentBranchName()
+		{
+			var currentBranch = configurationManager.GetValue("CurrentBranch");
+
+			if (!String.IsNullOrWhiteSpace(currentBranch) && GetBranchNames().Contains(currentBranch))
+			{
+				return currentBranch;
+			}
+
+			var branch = this.Branches
+				.Where(s => !s.Properties.RootItem.IsDeleted && s.Properties.ParentBranch == null)
+				.OrderBy(s => s.DateCreated)
+				.Select(s => s.Properties.RootItem.Item)
+				.FirstOrDefault();
+
+			if (branch != null)
+			{
+				configurationManager.SetValue("CurrentBranch", branch);
+				return branch;
+			}
+
+			branch = this.Branches
+				.Where(s => !s.Properties.RootItem.IsDeleted)
+				.OrderBy(s => s.DateCreated)
+				.Select(s => s.Properties.RootItem.Item)
+				.FirstOrDefault();
+
+			if (branch != null)
+			{
+				configurationManager.SetValue("CurrentBranch", branch);
+				return branch;
+			}
+
+			branch = this.Branches
+				.OrderBy(s => s.DateCreated)
+				.Select(s => s.Properties.RootItem.Item)
+				.FirstOrDefault();
+
+			if (branch != null)
+			{
+				configurationManager.SetValue("CurrentBranch", branch);
+			}
+
+			return branch;
+		}
+
+		public void Refresh()
+		{
+			branches = null;
 		}
 	}
 }

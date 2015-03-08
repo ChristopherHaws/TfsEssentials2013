@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
@@ -8,6 +10,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
+using Spiral.TfsEssentials.Providers;
 
 namespace Spiral.TfsEssentials
 {
@@ -50,7 +53,8 @@ namespace Spiral.TfsEssentials
         {
             Debug.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
-        }
 
+			var serviceProvider = GetService(typeof(SVsServiceProvider)) as SVsServiceProvider;
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace Spiral.TfsEssentials.ViewModels
 
 			SelectBranchCommand = new RelayCommand(SelectBranch);
 
-			Refresh();
+			//Refresh();
 		}
 
 		private void SelectBranch(object obj)
@@ -61,6 +61,11 @@ namespace Spiral.TfsEssentials.ViewModels
 			}
 			set
 			{
+				if (!this.Branches.Contains(value))
+				{
+					return;
+				}
+
 				SetAndRaisePropertyChanged(ref currentBranch, value, "CurrentBranch");
 			}
 		}
@@ -85,11 +90,12 @@ namespace Spiral.TfsEssentials.ViewModels
 			{
 				// Now you’re on a separate thread.
 				var branchNames = tfsBranchProvider.GetBranchNames();
+				var currentBranchName = tfsBranchProvider.GetCurrentBranchName();
 
 				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
 				Branches = branchNames;
-				this.CurrentBranch = this.Branches.FirstOrDefault();
+				this.CurrentBranch = currentBranchName;
 				this.teamExplorerPageViewModelBase.IsBusy = false;
 			});
 		}

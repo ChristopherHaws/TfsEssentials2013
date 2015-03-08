@@ -40,12 +40,21 @@ namespace Spiral.TfsEssentials.ViewModels
 
 		public ICommand ViewPendingChangesCommand { get; private set; }
 
+		public ICommand PullCommand { get; private set; }
+
+		public ICommand PushCommand { get; private set; }
+
+		public ICommand SyncCommand { get; private set; }
+
 		public MergePageViewModel(MergeModel model, TfsBranchProvider tfsBranchProvider)
 		{
 			this.Model = model;
 			this.BranchDropDownViewModel = new BranchDropDownViewModel(this, tfsBranchProvider);
 
 			ViewPendingChangesCommand = new RelayCommand(NavigateToPendingChangesPage);
+			PullCommand = new RelayCommand(Pull);
+			PushCommand = new RelayCommand(Push);
+			SyncCommand = new RelayCommand(Sync);
 		}
 
 		private void NavigateToPendingChangesPage()
@@ -58,6 +67,16 @@ namespace Spiral.TfsEssentials.ViewModels
 			{
 				this.ShowException(ex);
 			}
+		}
+
+		private void Pull()
+		{
+		}
+		private void Push()
+		{
+		}
+		private void Sync()
+		{
 		}
 
 		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)

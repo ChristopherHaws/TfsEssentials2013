@@ -152,8 +152,10 @@
     <Compile Include="Models\TfsBranchModel.cs" />
     <Compile Include="Models\TfsChangesetModel.cs" />
     <Compile Include="Models\TfsTeamExplorerModelBase.cs" />
+    <Compile Include="Providers\PackageConfigurationManager.cs" />
     <Compile Include="Providers\TeamExplorerProvider.cs" />
     <Compile Include="Providers\TfsBranchProvider.cs" />
+    <Compile Include="Providers\TfsVersionControlProvider.cs" />
     <Compile Include="ViewModels\BranchDropDownViewModel.cs" />
     <Compile Include="ViewModels\ChangesetsSectionViewModelBase.cs" />
     <Compile Include="ViewModels\IncomingChangesetsSectionViewModel.cs" />
