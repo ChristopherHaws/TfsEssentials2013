@@ -154,5 +154,10 @@ namespace Spiral.TfsEssentials.Providers
 		{
 			branches = null;
 		}
+
+		public void SetCurrentBranch(string currentBranch)
+		{
+			configurationManager.SetValue("CurrentBranch", currentBranch);
+		}
 	}
 }

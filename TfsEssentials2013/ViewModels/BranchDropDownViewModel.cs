@@ -66,6 +66,7 @@ namespace Spiral.TfsEssentials.ViewModels
 					return;
 				}
 
+				tfsBranchProvider.SetCurrentBranch(value);
 				SetAndRaisePropertyChanged(ref currentBranch, value, "CurrentBranch");
 			}
 		}

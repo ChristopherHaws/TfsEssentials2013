@@ -45,7 +45,14 @@ namespace Spiral.TfsEssentials.Providers
 					return;
 				}
 
-				registryKey.SetValue(key, value, RegistryValueKind.String);
+				if (value == null)
+				{
+					registryKey.DeleteValue(key, false);
+				}
+				else
+				{
+					registryKey.SetValue(key, value, RegistryValueKind.String);
+				}
 			}
 		}
 
