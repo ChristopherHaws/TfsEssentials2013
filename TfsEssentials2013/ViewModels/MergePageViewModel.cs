@@ -64,5 +64,11 @@ namespace Spiral.TfsEssentials.ViewModels
 		{
 			throw new NotImplementedException();
 		}
+
+		public override void Refresh()
+		{
+			base.Refresh();
+			BranchDropDownViewModel.Refresh();
+		}
 	}
 }

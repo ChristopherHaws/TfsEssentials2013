@@ -14,6 +14,7 @@ namespace Spiral.TfsEssentials.ViewModels
 {
 	internal class BranchDropDownViewModel : ViewModelBase
 	{
+		private readonly TeamExplorerPageViewModelBase teamExplorerPageViewModelBase;
 		private readonly TfsBranchProvider tfsBranchProvider;
 		private string currentBranch;
 		private List<string> branches;
@@ -21,22 +22,12 @@ namespace Spiral.TfsEssentials.ViewModels
 		public BranchDropDownViewModel(TeamExplorerPageViewModelBase teamExplorerPageViewModelBase, TfsBranchProvider tfsBranchProvider)
 			: base(teamExplorerPageViewModelBase)
 		{
+			this.teamExplorerPageViewModelBase = teamExplorerPageViewModelBase;
 			this.tfsBranchProvider = tfsBranchProvider;
-			teamExplorerPageViewModelBase.IsBusy = true;
-
-			Task.Run(async delegate
-			{
-				// Now you’re on a separate thread.
-				var branchNames = tfsBranchProvider.GetBranchNames();
-
-				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-				Branches = branchNames;
-				this.CurrentBranch = this.Branches.FirstOrDefault();
-				teamExplorerPageViewModelBase.IsBusy = false;
-			});
 
 			SelectBranchCommand = new RelayCommand(SelectBranch);
+
+			Refresh();
 		}
 
 		private void SelectBranch(object obj)
@@ -84,6 +75,23 @@ namespace Spiral.TfsEssentials.ViewModels
 			{
 				SetAndRaisePropertyChanged(ref branches, value, "Branches");
 			}
+		}
+
+		public void Refresh()
+		{
+			teamExplorerPageViewModelBase.IsBusy = true;
+
+			Task.Run(async delegate
+			{
+				// Now you’re on a separate thread.
+				var branchNames = tfsBranchProvider.GetBranchNames();
+
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+				Branches = branchNames;
+				this.CurrentBranch = this.Branches.FirstOrDefault();
+				this.teamExplorerPageViewModelBase.IsBusy = false;
+			});
 		}
 	}
 }

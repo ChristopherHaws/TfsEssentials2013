@@ -18,22 +18,15 @@
 		</ResourceDictionary>
 	</UserControl.Resources>
 
-	<Grid x:Uid="mainGrid" Margin="0">
+	<Grid Margin="0">
 		<Grid.RowDefinitions>
-			<RowDefinition x:Uid="BranchPickerRow" Height="Auto"/>
-			<RowDefinition x:Uid="ActionsRow" Height="Auto"/>
-			<RowDefinition x:Uid="ProgressRow" Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
-		<WrapPanel x:Name="BranchesStackPanel" Grid.Row="0">
-			<TextBlock x:Uid="branchLabel"
-					   Margin="6,6,3,0"
-					   Localization.Attributes="Text (Modifiable Readable Text)"
-					   Foreground="{StaticResource SubduedTextBrushKey}"
-					   Text="Branch:" />
-			<tfs:DropDownLink x:Name="CurrentBranchLink"
-							  x:Uid="currentBranchLink"
-							  Margin="3,6,3,0"
-							  Text="{Binding Path=BranchDropDownViewModel.CurrentBranchName}">
+		<WrapPanel Grid.Row="0">
+			<TextBlock Margin="6,6,3,0" Foreground="{StaticResource SubduedTextBrushKey}" Text="Branch:" />
+			<tfs:DropDownLink Margin="3,6,3,0" Text="{Binding Path=BranchDropDownViewModel.CurrentBranchName}">
 				<tfs:DropDownLink.DropDownMenu>
 					<ContextMenu Placement="Bottom" StaysOpen="False" HasDropShadow="True"
 								 DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
@@ -48,10 +41,20 @@
 					</ContextMenu>
 				</tfs:DropDownLink.DropDownMenu>
 			</tfs:DropDownLink>
-			<Separator Style="{StaticResource VerticalSeparator}" Margin="3,6,3,0"/>
-			<tfs:TextLink x:Uid="viewPendingChangesLink" Margin="3,6,3,0" Text="Pending Changes" Command="{Binding Path=ViewPendingChangesCommand}"/>
 		</WrapPanel>
-		<Button Grid.Row="1">Hello</Button>
-		<Button Grid.Row="2">World</Button>
+		<Grid Grid.Row="1" Margin="6">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" Margin="0" MinWidth="75" MinHeight="23" VerticalAlignment="Center" Content="_Sync" Command="{Binding Path=SyncCommand}"/>
+			<WrapPanel Grid.Column="1" Margin="12,0,0,0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+				<tfs:TextLink Text="Pull" Command="{Binding Path=PullCommand}"/>
+				<Separator Style="{StaticResource VerticalSeparator}"/>
+				<tfs:TextLink Text="Push" Command="{Binding Path=PushCommand}"/>
+				<Separator Style="{StaticResource VerticalSeparator}"/>
+				<tfs:TextLink Text="Pending Changes" Command="{Binding Path=ViewPendingChangesCommand}"/>
+			</WrapPanel>
+		</Grid>
 	</Grid>
 </UserControl>
