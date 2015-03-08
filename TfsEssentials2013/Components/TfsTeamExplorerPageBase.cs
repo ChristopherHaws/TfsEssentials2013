@@ -12,7 +12,7 @@ using Spiral.TfsEssentials.Managers;
 
 namespace Spiral.TfsEssentials.Components
 {
-	internal class TfsTeamExplorerPageBase : TeamExplorerPageBase, IAsyncWorkManager
+	internal class TfsTeamExplorerPageBase : TeamExplorerAsyncPageBase, IAsyncWorkManager
 	{
 		protected OrderedTaskScheduler TaskScheduler { get; set; }
 
