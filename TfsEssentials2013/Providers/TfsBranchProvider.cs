@@ -4,10 +4,12 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EnvDTE;
+using EnvDTE80;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using Microsoft.VisualStudio.Shell;
+using Spiral.TfsEssentials.Extentions;
 using Spiral.TfsEssentials.Models;
 
 namespace Spiral.TfsEssentials.Providers
@@ -18,6 +20,7 @@ namespace Spiral.TfsEssentials.Providers
 		private readonly TfsVersionControlProvider tfsVersionControlProvider;
 		private readonly PackageConfigurationManager configurationManager;
 		private Tuple<String, List<BranchObject>> branches;
+		private DTE2 visualStudioEnvironmentProvider;
 
 		private IEnumerable<BranchObject> Branches
 		{
@@ -56,10 +59,12 @@ namespace Spiral.TfsEssentials.Providers
 		[ImportingConstructor]
 		public TfsBranchProvider(
 			[Import] TfsVersionControlProvider tfsVersionControlProvider,
-			[Import] PackageConfigurationManager configurationManager)
+			[Import] PackageConfigurationManager configurationManager,
+			[Import] SVsServiceProvider serviceProvider)
 		{
 			this.tfsVersionControlProvider = tfsVersionControlProvider;
 			this.configurationManager = configurationManager;
+			this.visualStudioEnvironmentProvider = serviceProvider.GetService<_DTE>() as DTE2;
 		}
 
 		public string GetBranchName(string localPath)
@@ -97,14 +102,6 @@ namespace Spiral.TfsEssentials.Providers
 			return Path.GetFileName(branch.Properties.RootItem.Item);
 		}
 
-		public List<string> GetBranchNames()
-		{
-			return this.Branches
-				.Where(x => !x.Properties.RootItem.IsDeleted)
-				.Select(x => x.Properties.RootItem.Item)
-				.ToList();
-		}
-
 		public List<BranchModel> GetBranches()
 		{
 			return this.Branches
@@ -133,38 +130,71 @@ namespace Spiral.TfsEssentials.Providers
 				return null;
 			}
 
+			var currentBranch =
+				GetBranchFromCurrentSolution(possibleBranches) ??
+				GetBranchFromMostRecentBranch(possibleBranches, teamProject) ??
+				GetRootBranchForCurrentTeamProject(possibleBranches, teamProject) ??
+				GetEarliestBranchForCurrentTeamProject(possibleBranches, teamProject);
+
+			if (currentBranch != null)
+			{
+				SetCurrentBranch(currentBranch, teamProject);
+			}
+
+			return currentBranch;
+		}
+
+		private BranchModel GetBranchFromMostRecentBranch(List<BranchModel> possibleBranches, TeamProject teamProject)
+		{
 			var currentBranchName = configurationManager.GetValue(teamProject, "MostRecentBranch");
-
-			if (!String.IsNullOrWhiteSpace(currentBranchName))
+			if (String.IsNullOrWhiteSpace(currentBranchName))
 			{
-				var possibleBranch = possibleBranches.FirstOrDefault(x => String.Equals(x.Name, currentBranchName, StringComparison.InvariantCultureIgnoreCase));
-				if (possibleBranch != null)
-				{
-					return possibleBranch;
-				}
+				return null;
 			}
 
-			var branch = possibleBranches
-				.Where(x => x.HasParent = false)
+			return possibleBranches.FirstOrDefault(x => String.Equals(x.Name, currentBranchName, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		private BranchModel GetRootBranchForCurrentTeamProject(List<BranchModel> possibleBranches, TeamProject teamProject)
+		{
+			return possibleBranches
+				.OrderBy(x => x.CreatedDate)
+				.FirstOrDefault(x => x.HasParent == false);
+		}
+
+		private BranchModel GetEarliestBranchForCurrentTeamProject(List<BranchModel> possibleBranches, TeamProject teamProject)
+		{
+			return possibleBranches
 				.OrderBy(x => x.CreatedDate)
 				.FirstOrDefault();
+		}
 
-			if (branch != null)
+		private BranchModel GetBranchFromCurrentSolution(List<BranchModel> possibleBranches)
+		{
+			if (visualStudioEnvironmentProvider == null)
 			{
-				SetCurrentBranch(branch, teamProject);
-				return branch;
+				return null;
 			}
 
-			branch = possibleBranches
+			var fileName = visualStudioEnvironmentProvider.Solution.FileName;
+			if (String.IsNullOrWhiteSpace(fileName))
+			{
+				return null;
+			}
+
+			var server = tfsVersionControlProvider.GetCurrentServer();
+			var workspace = server.TryGetWorkspace(fileName);
+			if (workspace == null)
+			{
+				return null;
+			}
+
+			var serverItemForLocalItem = workspace.GetServerItemForLocalItem(fileName);
+
+			return possibleBranches
+				.Where(x => serverItemForLocalItem.StartsWith(x.Path))
 				.OrderBy(x => x.CreatedDate)
 				.FirstOrDefault();
-
-			if (branch != null)
-			{
-				SetCurrentBranch(branch, teamProject);
-			}
-
-			return branch;
 		}
 
 		public void Refresh()
