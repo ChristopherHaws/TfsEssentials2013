@@ -17,11 +17,15 @@ namespace Spiral.TfsEssentials.ViewModels
 		{
 			try
 			{
-				return this.Model != null && !this.Model.IsRepositoryOperationInProgress && (!this.Model.IsTfsOperationRunning && this.Model.BranchModel != null) && this.Model.BranchModel.HasUpstreamInfo && this.Model.BranchModel.OutgoingChangesets.Any();
+				return this.Model != null
+					&& !this.Model.IsRepositoryOperationInProgress
+					&& !this.Model.IsTfsOperationRunning
+					&& this.Model.HasUpstreamInfo
+					&& this.Model.OutgoingChangesets.Any();
 			}
 			catch (Exception ex)
 			{
-				this.ShowException(ex, true);
+				this.ShowException(ex);
 			}
 
 			return false;
@@ -34,9 +38,9 @@ namespace Spiral.TfsEssentials.ViewModels
 
 		protected override void UpdateItemsSource()
 		{
-			if (this.Model != null && this.Model.BranchModel != null && this.Model.BranchModel.OutgoingChangesets != null)
+			if (this.Model != null && this.Model.OutgoingChangesets != null)
 			{
-				this.ChangesetsItemsSource.Reset(this.Model.BranchModel.OutgoingChangesets);
+				this.ChangesetsItemsSource.Reset(this.Model.OutgoingChangesets);
 			}
 			else
 			{

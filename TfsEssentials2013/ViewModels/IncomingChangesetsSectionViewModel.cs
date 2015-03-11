@@ -18,7 +18,10 @@ namespace Spiral.TfsEssentials.ViewModels
 		{
 			try
 			{
-				return this.Model != null && !this.Model.IsRepositoryOperationInProgress && (!this.Model.IsTfsOperationRunning && this.Model.BranchModel != null) && this.Model.BranchModel.HasUpstreamInfo;
+				return this.Model != null
+					&& !this.Model.IsRepositoryOperationInProgress
+					&& !this.Model.IsTfsOperationRunning
+					&& this.Model.HasUpstreamInfo;
 			}
 			catch (Exception ex)
 			{
@@ -35,9 +38,9 @@ namespace Spiral.TfsEssentials.ViewModels
 
 		protected override void UpdateItemsSource()
 		{
-			if (this.Model != null && this.Model.BranchModel != null && this.Model.BranchModel.IncomingChangesets != null)
+			if (this.Model != null && this.Model.IncomingChangesets != null)
 			{
-				this.ChangesetsItemsSource.Reset(this.Model.BranchModel.IncomingChangesets);
+				this.ChangesetsItemsSource.Reset(this.Model.IncomingChangesets);
 			}
 			else
 			{
@@ -56,7 +59,7 @@ namespace Spiral.TfsEssentials.ViewModels
 			{
 				this.Title = "Incoming Commits";
 
-				if (this.Model != null && this.Model.BranchModel != null && !this.Model.BranchModel.HasUpstreamInfo)
+				if (this.Model != null && !this.Model.HasUpstreamInfo)
 				{
 					this.NoChangesetsMessage = "Current branch does not have an upstream branch configured. There are no incoming changesets for non-tracking branches.";
 				}

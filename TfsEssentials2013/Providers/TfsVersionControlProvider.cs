@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
-using EnvDTE;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using Microsoft.VisualStudio.Shell;

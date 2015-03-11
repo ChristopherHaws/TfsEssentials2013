@@ -2,9 +2,9 @@ using System;
 
 namespace Spiral.TfsEssentials.Models
 {
-	internal class TfsChangesetModel
+	internal class ChangesetModel
 	{
-		public TfsChangesetModel()
+		public ChangesetModel()
 		{
 			this.Id = "C123456";
 			this.Comments = "Changeset Comments";

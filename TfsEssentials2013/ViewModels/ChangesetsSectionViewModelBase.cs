@@ -3,26 +3,26 @@ using Microsoft.TeamFoundation.Common.Internal;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.MVVM;
+using PropertyChanged;
 using Spiral.TfsEssentials.Models;
 
 namespace Spiral.TfsEssentials.ViewModels
 {
 	internal abstract class ChangesetsSectionViewModelBase : TeamExplorerSectionViewModelBase
 	{
-		private ObservableCollection<TfsChangesetModel> selectedItems = new ObservableCollection<TfsChangesetModel>();
 		private MergeModel model;
-		private BatchedObservableCollection<TfsChangesetModel> changesetsItemsSource;
-		private string noChangesetsMessage;
 
 		protected ChangesetsSectionViewModelBase()
 		{
-			ChangesetsItemsSource = new BatchedObservableCollection<TfsChangesetModel>()
+			this.ChangesetsItemsSource = new BatchedObservableCollection<ChangesetModel>()
 			{
-				new TfsChangesetModel(),
-				new TfsChangesetModel(),
-				new TfsChangesetModel(),
-				new TfsChangesetModel()
+				new ChangesetModel(),
+				new ChangesetModel(),
+				new ChangesetModel(),
+				new ChangesetModel()
 			};
+
+			this.SelectedItems = new ObservableCollection<ChangesetModel>();
 
 			this.UpdateTitle();
 			this.UpdateItemsSource();
@@ -37,6 +37,7 @@ namespace Spiral.TfsEssentials.ViewModels
 			this.Model = e.ServiceProvider.GetService<MergeModel>();
 		}
 
+		[DoNotNotify]
 		public virtual MergeModel Model
 		{
 			get
@@ -53,41 +54,11 @@ namespace Spiral.TfsEssentials.ViewModels
 			}
 		}
 
-		public ObservableCollection<TfsChangesetModel> SelectedItems
-		{
-			get
-			{
-				return this.selectedItems;
-			}
-			private set
-			{
-				this.SetAndRaisePropertyChanged(ref this.selectedItems, value, "SelectedItems");
-			}
-		}
+		public ObservableCollection<ChangesetModel> SelectedItems { get; private set; }
 
-		public string NoChangesetsMessage
-		{
-			get
-			{
-				return this.noChangesetsMessage;
-			}
-			set
-			{
-				this.SetAndRaisePropertyChanged(ref this.noChangesetsMessage, value, "NoChangesetsMessage");
-			}
-		}
+		public string NoChangesetsMessage { get; set; }
 
-		public BatchedObservableCollection<TfsChangesetModel> ChangesetsItemsSource
-		{
-			get
-			{
-				return this.changesetsItemsSource;
-			}
-			set
-			{
-				this.SetAndRaisePropertyChanged(ref this.changesetsItemsSource, value, "ChangesetsItemsSource");
-			}
-		}
+		public BatchedObservableCollection<ChangesetModel> ChangesetsItemsSource { get; set; }
 
 		protected abstract void UpdateItemsSource();
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.MVVM;
@@ -14,8 +16,6 @@ namespace Spiral.TfsEssentials.ViewModels
 	{
 		private readonly TeamExplorerPageViewModelBase teamExplorerPageViewModelBase;
 		private readonly TfsBranchProvider tfsBranchProvider;
-		private BranchModel selectedBranch;
-		private List<BranchModel> branches;
 
 		public BranchDropDownViewModel(TeamExplorerPageViewModelBase teamExplorerPageViewModelBase, TfsBranchProvider tfsBranchProvider)
 			: base(teamExplorerPageViewModelBase)
@@ -24,8 +24,6 @@ namespace Spiral.TfsEssentials.ViewModels
 			this.tfsBranchProvider = tfsBranchProvider;
 
 			SelectBranchCommand = new RelayCommand(SelectBranch);
-
-			//Refresh();
 		}
 
 		private void SelectBranch(object obj)
@@ -35,11 +33,6 @@ namespace Spiral.TfsEssentials.ViewModels
 			{
 				return;
 			}
-
-			//if (!this.Branches.Contains(branch))
-			//{
-			//	return;
-			//}
 
 			tfsBranchProvider.SetCurrentBranch(branch);
 			this.SelectedBranch = branch;
@@ -56,29 +49,9 @@ namespace Spiral.TfsEssentials.ViewModels
 			}
 		}
 
-		public BranchModel SelectedBranch
-		{
-			get
-			{
-				return selectedBranch;
-			}
-			set
-			{
-				SetAndRaisePropertyChanged(ref selectedBranch, value, "SelectedBranch");
-			}
-		}
+		public BranchModel SelectedBranch { get; set; }
 
-		public List<BranchModel> Branches
-		{
-			get
-			{
-				return branches;
-			}
-			set
-			{
-				SetAndRaisePropertyChanged(ref branches, value, "Branches");
-			}
-		}
+		public List<BranchModel> Branches { get; set; }
 
 		public void Refresh()
 		{

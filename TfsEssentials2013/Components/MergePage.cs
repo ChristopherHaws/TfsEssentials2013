@@ -19,12 +19,11 @@ namespace Spiral.TfsEssentials.Components
 		public MergePage([Import]TfsBranchProvider tfsBranchProvider)
 		{
 			this.tfsBranchProvider = tfsBranchProvider;
-			this.Title = "Unsynced Merge";
 		}
 
 		protected override object CreateModel(PageInitializeEventArgs e)
 		{
-			return new MergeModel(e.ServiceProvider, this.TaskFactory);
+			return new MergeModel();
 		}
 
 		protected override object CreateView(PageInitializeEventArgs e)

@@ -80,12 +80,12 @@ namespace Spiral.TfsEssentials.Components
 		public T GetService<T>()
 		{
 			Debug.Assert(this.ServiceProvider != null, "GetService<T> called before service provider is set");
-			if (this.ServiceProvider != null)
+			if (this.ServiceProvider == null)
 			{
-				return (T)this.ServiceProvider.GetService(typeof(T));
+				return default(T);
 			}
 
-			return default(T);
+			return (T)this.ServiceProvider.GetService(typeof(T));
 		}
 	}
 }

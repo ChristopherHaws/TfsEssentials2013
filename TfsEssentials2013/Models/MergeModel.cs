@@ -1,64 +1,53 @@
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.TeamFoundation;
-using Microsoft.TeamFoundation.MVVM;
+using PropertyChanged;
 
 namespace Spiral.TfsEssentials.Models
 {
-	internal class MergeModel : TfsTeamExplorerModelBase
+	internal class MergeModel : ModelBase
 	{
-		private bool isRepositoryOperationInProgress;
-		private TfsBranchModel branchModel;
+		public bool IsRepositoryOperationInProgress { get; set; }
 
-		public bool IsRepositoryOperationInProgress
-		{
-			get
-			{
-				return isRepositoryOperationInProgress;
-			}
-			set
-			{
-				this.SetAndRaisePropertyChanged(ref isRepositoryOperationInProgress, value, "IsRepositoryOperationInProgress");
-			}
-		}
-
-		public MergeModel(IServiceProvider serviceProvider, TaskFactory taskFactory)
-			: base(serviceProvider, taskFactory)
+		public MergeModel()
 		{
 			TeamFoundationTrace.Verbose(TraceKeywordSets.TeamExplorer, "Entering ChangesetModel constructor");
-			this.BranchModel = new TfsBranchModel();
+
+			this.IncomingChangesets = new List<ChangesetModel>()
+			{
+				new ChangesetModel(),
+				new ChangesetModel(),
+				new ChangesetModel()
+			};
+
+			this.OutgoingChangesets = new List<ChangesetModel>()
+			{
+				new ChangesetModel(),
+				new ChangesetModel(),
+				new ChangesetModel()
+			};
+
+			this.HasUpstreamInfo = true;
 		}
 
-		[ValueDependsOnProperty("Branch")]
+		[DependsOn("Branch")]
 		public int IncomingOutgoingChangesetsMaxCount
 		{
 			get
 			{
-				var val1 = 0;
-				var val2 = 0;
-
-				if (this.BranchModel != null)
-				{
-					val1 = this.BranchModel.IncomingChangesets != null ? this.BranchModel.IncomingChangesets.Count : 0;
-					val2 = this.BranchModel.OutgoingChangesets != null ? this.BranchModel.OutgoingChangesets.Count : 0;
-				}
-
-				return Math.Max(val1, val2);
-			}
-		}
-
-		public TfsBranchModel BranchModel
-		{
-			get
-			{
-				return this.branchModel;
-			}
-			set
-			{
-				this.SetAndRaisePropertyChanged(ref this.branchModel, value, "Branch");
+				return Math.Max(
+					this.IncomingChangesets != null ? this.IncomingChangesets.Count : 0,
+					this.OutgoingChangesets != null ? this.OutgoingChangesets.Count : 0
+				);
 			}
 		}
 
 		public bool IsTfsOperationRunning { get; set; }
+
+		public List<ChangesetModel> IncomingChangesets { get; set; }
+
+		public List<ChangesetModel> OutgoingChangesets { get; set; }
+
+		public bool HasUpstreamInfo { get; set; }
 	}
 }

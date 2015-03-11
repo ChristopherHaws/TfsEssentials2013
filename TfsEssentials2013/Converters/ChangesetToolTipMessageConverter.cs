@@ -12,7 +12,7 @@ namespace Spiral.TfsEssentials.Converters
 		{
 			try
 			{
-				var tfsChangeset = value as TfsChangesetModel;
+				var tfsChangeset = value as ChangesetModel;
 				if (tfsChangeset == null)
 				{
 					return String.Empty;

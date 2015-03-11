@@ -11,30 +11,7 @@ namespace Spiral.TfsEssentials.ViewModels
 {
 	internal class MergePageViewModel : TeamExplorerPageViewModelBase
 	{
-		private MergeModel model;
-
-		public MergeModel Model
-		{
-			get
-			{
-				return model;
-			}
-			set
-			{
-				if (model != null)
-				{
-					model.PropertyChanged -= Model_PropertyChanged;
-				}
-
-				model = value;
-				if (model == null)
-				{
-					return;
-				}
-
-				model.PropertyChanged += Model_PropertyChanged;
-			}
-		}
+		public MergeModel Model { get; set; }
 
 		public BranchDropDownViewModel BranchDropDownViewModel { get; private set; }
 
@@ -48,6 +25,7 @@ namespace Spiral.TfsEssentials.ViewModels
 
 		public MergePageViewModel(MergeModel model, TfsBranchProvider tfsBranchProvider)
 		{
+			this.Title = "Merge";
 			this.Model = model;
 			this.BranchDropDownViewModel = new BranchDropDownViewModel(this, tfsBranchProvider);
 
@@ -77,11 +55,7 @@ namespace Spiral.TfsEssentials.ViewModels
 		}
 		private void Sync()
 		{
-		}
-
-		private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			throw new NotImplementedException();
+			this.Model.HasUpstreamInfo = !this.Model.HasUpstreamInfo;
 		}
 
 		public override void Refresh()
