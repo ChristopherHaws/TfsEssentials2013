@@ -20,7 +20,7 @@ namespace Spiral.TfsEssentials.Providers
 		private readonly TfsVersionControlProvider tfsVersionControlProvider;
 		private readonly PackageConfigurationManager configurationManager;
 		private Tuple<String, List<BranchObject>> branches;
-		private DTE2 visualStudioEnvironmentProvider;
+		private readonly DTE2 visualStudioEnvironmentProvider;
 
 		private IEnumerable<BranchObject> Branches
 		{

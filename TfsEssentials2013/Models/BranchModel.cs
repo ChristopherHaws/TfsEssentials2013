@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Spiral.TfsEssentials.Models
 {
+	[DebuggerDisplay("{Path}")]
 	internal class BranchModel
 	{
 		public String Name { get; set; }

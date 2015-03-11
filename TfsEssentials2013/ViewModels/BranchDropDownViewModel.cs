@@ -84,17 +84,17 @@ namespace Spiral.TfsEssentials.ViewModels
 		{
 			teamExplorerPageViewModelBase.IsBusy = true;
 
-			//Task.Run(async delegate
-			//{
+			Task.Run(async delegate
+			{
 				var currentBranches = tfsBranchProvider.GetBranches();
 				var currentBranchName = tfsBranchProvider.GetCurrentBranch();
 
-				//await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
 				Branches = currentBranches;
 				this.SelectedBranch = currentBranchName;
 				this.teamExplorerPageViewModelBase.IsBusy = false;
-			//});
+			});
 		}
 	}
 }
