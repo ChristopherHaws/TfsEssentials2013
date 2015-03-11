@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.VisualStudio.Shell;
 using Spiral.TfsEssentials.Extentions;
-using Spiral.TfsEssentials.Providers;
 
 namespace Spiral.TfsEssentials.Components
 {
-	[TeamExplorerNavigationItem(MergeNavigationItem.LinkId, 1000)]
+	[TeamExplorerNavigationItem(LinkId, 1000)]
 	internal class MergeNavigationItem : TeamExplorerNavigationItemBase
 	{
 		public const string LinkId = "5E7F3922-32ED-4621-ACEB-D7C8D80CA3EE";

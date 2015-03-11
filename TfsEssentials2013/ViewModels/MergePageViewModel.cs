@@ -6,10 +6,11 @@ using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.MVVM;
 using Spiral.TfsEssentials.Models;
 using Spiral.TfsEssentials.Providers;
+using Spiral.TfsEssentials.WPF.TeamExplorer;
 
 namespace Spiral.TfsEssentials.ViewModels
 {
-	internal class MergePageViewModel : TeamExplorerPageViewModelBase
+	internal class MergePageViewModel : TeamExplorerAsyncPageViewModelBase<MergePageViewModelRefreshArgs>
 	{
 		public MergeModel Model { get; set; }
 
@@ -58,10 +59,27 @@ namespace Spiral.TfsEssentials.ViewModels
 			this.Model.HasUpstreamInfo = !this.Model.HasUpstreamInfo;
 		}
 
-		public override void Refresh()
+		public override MergePageViewModelRefreshArgs BeginRefresh(RefreshReason reason, CancelEventArgs e)
 		{
-			base.Refresh();
-			BranchDropDownViewModel.Refresh();
+			return new MergePageViewModelRefreshArgs
+			{
+				BranchDropDownViewModelRefreshArgs = this.BranchDropDownViewModel.BeginRefresh(reason, e)
+			};
 		}
+
+		public override void RefreshCompleted(MergePageViewModelRefreshArgs result, RefreshReason reason, AsyncCompletedEventArgs e)
+		{
+			if (result == null)
+			{
+				return;
+			}
+
+			this.BranchDropDownViewModel.RefreshCompleted(result.BranchDropDownViewModelRefreshArgs, reason, e);
+		}
+	}
+
+	internal class MergePageViewModelRefreshArgs
+	{
+		public BranchDropDownViewModelRefreshArgs BranchDropDownViewModelRefreshArgs { get; set; }
 	}
 }

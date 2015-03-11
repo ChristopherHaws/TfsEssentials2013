@@ -5,11 +5,13 @@ using Microsoft.TeamFoundation.Controls;
 using Spiral.TfsEssentials.Models;
 using Spiral.TfsEssentials.Providers;
 using Spiral.TfsEssentials.ViewModels;
+using Spiral.TfsEssentials.Views;
+using Spiral.TfsEssentials.WPF.TeamExplorer;
 
 namespace Spiral.TfsEssentials.Components
 {
 	[TeamExplorerPage(PageId)]
-	internal class MergePage : TfsTeamExplorerPageBase
+	internal class MergePage : TeamExplorerAsyncPageBase<MergePageViewModelRefreshArgs>
 	{
 		public const string PageId = "6EF9B9F7-71EE-4B9A-ACCF-9447536A9765";
 
@@ -28,7 +30,7 @@ namespace Spiral.TfsEssentials.Components
 
 		protected override object CreateView(PageInitializeEventArgs e)
 		{
-			var view = new Views.MergePageView();
+			var view = new MergePageView();
 			return view;
 		}
 

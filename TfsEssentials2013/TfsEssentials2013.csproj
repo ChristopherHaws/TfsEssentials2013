@@ -146,7 +146,6 @@
     <Compile Include="Components\MergeNavigationItem.cs" />
     <Compile Include="Components\MergePage.cs" />
     <Compile Include="Components\OutgoingChangesetsSection.cs" />
-    <Compile Include="Components\TfsTeamExplorerPageBase.cs" />
     <Compile Include="Converters\ChangesetsSectionListViewHeightConverter.cs" />
     <Compile Include="Converters\ChangesetToolTipAuthorConverter.cs" />
     <Compile Include="Converters\ChangesetToolTipMessageConverter.cs" />
@@ -187,6 +186,11 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="TfsEssentialsPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WPF\TeamExplorer\IAsyncViewModelRefresh.cs" />
+    <Compile Include="WPF\TeamExplorer\TeamExplorerAsyncPageBase.cs" />
+    <Compile Include="WPF\TeamExplorer\TeamExplorerAsyncPageViewModelBase.cs" />
+    <Compile Include="WPF\TeamExplorer\TeamExplorerAsyncSectionBase.cs" />
+    <Compile Include="WPF\TeamExplorer\TeamExplorerAsyncViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">

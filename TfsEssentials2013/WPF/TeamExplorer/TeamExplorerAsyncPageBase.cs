@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Threading;
@@ -10,9 +11,9 @@ using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.Threading;
 using Spiral.TfsEssentials.Managers;
 
-namespace Spiral.TfsEssentials.Components
+namespace Spiral.TfsEssentials.WPF.TeamExplorer
 {
-	internal class TfsTeamExplorerPageBase : TeamExplorerAsyncPageBase, IAsyncWorkManager
+	internal class TeamExplorerAsyncPageBase<T> : TeamExplorerAsyncPageBase, IAsyncWorkManager, IAsyncRefresh
 	{
 		protected OrderedTaskScheduler TaskScheduler { get; set; }
 
@@ -77,15 +78,59 @@ namespace Spiral.TfsEssentials.Components
 			return this.TaskFactory.StartNew((() => action(this.CancellationTokenSource.Token)));
 		}
 
-		public T GetService<T>()
+		public TService GetService<TService>()
 		{
 			Debug.Assert(this.ServiceProvider != null, "GetService<T> called before service provider is set");
 			if (this.ServiceProvider == null)
 			{
-				return default(T);
+				return default(TService);
 			}
 
-			return (T)this.ServiceProvider.GetService(typeof(T));
+			return (TService)this.ServiceProvider.GetService(typeof(TService));
+		}
+
+		public void OnPageRefreshStarted(RefreshReason reason)
+		{
+			var viewModel = this.ViewModel as TeamExplorerAsyncPageViewModelBase<T>;
+			if (viewModel == null)
+			{
+				return;
+			}
+
+			viewModel.IsBusy = true;
+		}
+
+		public void OnPageRefreshCompleted(RefreshReason reason)
+		{
+			var viewModel = this.ViewModel as TeamExplorerAsyncPageViewModelBase<T>;
+			if (viewModel == null)
+			{
+				return;
+			}
+
+			viewModel.IsBusy = false;
+		}
+
+		public object BeginRefresh(RefreshReason reason, CancelEventArgs e)
+		{
+			var viewModel = this.ViewModel as TeamExplorerAsyncPageViewModelBase<T>;
+			if (viewModel == null)
+			{
+				return null;
+			}
+
+			return viewModel.BeginRefresh(reason, e);
+		}
+
+		public void RefreshCompleted(object result, RefreshReason reason, AsyncCompletedEventArgs e)
+		{
+			var viewModel = this.ViewModel as TeamExplorerAsyncPageViewModelBase<T>;
+			if (viewModel != null)
+			{
+				viewModel.RefreshCompleted((T)result, reason, e);
+			}
+
+			this.ViewModel.Refresh();
 		}
 	}
 }
