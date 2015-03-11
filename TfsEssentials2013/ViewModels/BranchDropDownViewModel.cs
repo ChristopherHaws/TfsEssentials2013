@@ -91,7 +91,7 @@ namespace Spiral.TfsEssentials.ViewModels
 
 				await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-				Branches = currentBranches;
+				this.Branches = currentBranches;
 				this.SelectedBranch = currentBranchName;
 				this.teamExplorerPageViewModelBase.IsBusy = false;
 			});
