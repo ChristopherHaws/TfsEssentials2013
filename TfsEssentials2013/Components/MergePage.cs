@@ -16,11 +16,15 @@ namespace Spiral.TfsEssentials.Components
 		public const string PageId = "6EF9B9F7-71EE-4B9A-ACCF-9447536A9765";
 
 		private readonly TfsBranchProvider tfsBranchProvider;
+		private readonly ChangesetProvider changesetProvider;
 
 		[ImportingConstructor]
-		public MergePage([Import]TfsBranchProvider tfsBranchProvider)
+		public MergePage(
+			[Import]TfsBranchProvider tfsBranchProvider,
+			[Import]ChangesetProvider changesetProvider)
 		{
 			this.tfsBranchProvider = tfsBranchProvider;
+			this.changesetProvider = changesetProvider;
 		}
 
 		protected override object CreateModel(PageInitializeEventArgs e)
@@ -36,7 +40,7 @@ namespace Spiral.TfsEssentials.Components
 
 		protected override ITeamExplorerPage CreateViewModel(PageInitializeEventArgs e)
 		{
-			var viewModel = new MergePageViewModel(this.Model as MergeModel, tfsBranchProvider);
+			var viewModel = new MergePageViewModel(this.Model as MergeModel, tfsBranchProvider, changesetProvider);
 			return viewModel;
 		}
 

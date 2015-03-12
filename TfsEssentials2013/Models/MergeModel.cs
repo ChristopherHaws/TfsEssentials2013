@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.TeamFoundation;
 using PropertyChanged;
 
@@ -47,6 +48,11 @@ namespace Spiral.TfsEssentials.Models
 		public List<ChangesetModel> IncomingChangesets { get; set; }
 
 		public List<ChangesetModel> OutgoingChangesets { get; set; }
+
+		public void OnOutgoingChangesetsChanged()
+		{
+			Debug.WriteLine("OutgoingChangesets Changed");
+		}
 
 		public bool HasUpstreamInfo { get; set; }
 	}

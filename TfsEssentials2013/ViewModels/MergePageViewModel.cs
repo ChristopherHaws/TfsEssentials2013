@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Windows.Input;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
@@ -12,6 +14,8 @@ namespace Spiral.TfsEssentials.ViewModels
 {
 	internal class MergePageViewModel : TeamExplorerAsyncPageViewModelBase<MergePageViewModelRefreshArgs>
 	{
+		private readonly ChangesetProvider changesetProvider;
+
 		public MergeModel Model { get; set; }
 
 		public BranchDropDownViewModel BranchDropDownViewModel { get; private set; }
@@ -24,8 +28,13 @@ namespace Spiral.TfsEssentials.ViewModels
 
 		public ICommand SyncCommand { get; private set; }
 
-		public MergePageViewModel(MergeModel model, TfsBranchProvider tfsBranchProvider)
+		public MergePageViewModel(
+			MergeModel model,
+			TfsBranchProvider tfsBranchProvider,
+			ChangesetProvider changesetProvider)
 		{
+			this.changesetProvider = changesetProvider;
+
 			this.Title = "Merge";
 			this.Model = model;
 			this.BranchDropDownViewModel = new BranchDropDownViewModel(this, tfsBranchProvider);
@@ -61,9 +70,15 @@ namespace Spiral.TfsEssentials.ViewModels
 
 		public override MergePageViewModelRefreshArgs BeginRefresh(RefreshReason reason, CancelEventArgs e)
 		{
+			var branchArgs = this.BranchDropDownViewModel.BeginRefresh(reason, e);
+			var incomingChangsets = changesetProvider.GetIncomingChangesets(branchArgs.SelectedBranch);
+			var outgoingChangsets = changesetProvider.GetOutgoingChangesets(branchArgs.SelectedBranch);
+
 			return new MergePageViewModelRefreshArgs
 			{
-				BranchDropDownViewModelRefreshArgs = this.BranchDropDownViewModel.BeginRefresh(reason, e)
+				BranchDropDownViewModelRefreshArgs = branchArgs,
+				IncomingChangesets = incomingChangsets,
+				OutgoingChangesets = outgoingChangsets
 			};
 		}
 
@@ -75,11 +90,23 @@ namespace Spiral.TfsEssentials.ViewModels
 			}
 
 			this.BranchDropDownViewModel.RefreshCompleted(result.BranchDropDownViewModelRefreshArgs, reason, e);
+			this.Model.IncomingChangesets = result.IncomingChangesets;
+			this.Model.OutgoingChangesets = result.OutgoingChangesets;
 		}
 	}
 
 	internal class MergePageViewModelRefreshArgs
 	{
+		public MergePageViewModelRefreshArgs()
+		{
+			this.IncomingChangesets = new List<ChangesetModel>();
+			this.OutgoingChangesets = new List<ChangesetModel>();
+		}
+
 		public BranchDropDownViewModelRefreshArgs BranchDropDownViewModelRefreshArgs { get; set; }
+
+		public List<ChangesetModel> IncomingChangesets { get; set; }
+
+		public List<ChangesetModel> OutgoingChangesets { get; set; }
 	}
 }

@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Spiral.TfsEssentials.Models
 {
-	[DebuggerDisplay("{Path}")]
+	[DebuggerDisplay("Branch: {Path}")]
 	internal class BranchModel
 	{
 		public String Name { get; set; }
@@ -17,6 +17,8 @@ namespace Spiral.TfsEssentials.Models
 		public DateTime CreatedDate { get; set; }
 
 		public Boolean HasParent { get; set; }
+
+		public String ParentPath { get; set; }
 
 		public Boolean HasChildren { get; set; }
 	}

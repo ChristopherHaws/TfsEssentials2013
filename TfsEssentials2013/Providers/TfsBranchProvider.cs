@@ -114,6 +114,7 @@ namespace Spiral.TfsEssentials.Providers
 					Owner = x.Properties.OwnerDisplayName,
 					CreatedDate = x.DateCreated,
 					HasParent = x.Properties.ParentBranch != null,
+					ParentPath = x.Properties.ParentBranch == null ? null : x.Properties.ParentBranch.Item,
 					HasChildren = x.ChildBranches.Any()
 				})
 				.ToList();

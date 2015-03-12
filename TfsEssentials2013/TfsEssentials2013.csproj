@@ -157,6 +157,7 @@
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\ChangesetModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Providers\ChangesetProvider.cs" />
     <Compile Include="Providers\PackageConfigurationManager.cs" />
     <Compile Include="Providers\TeamExplorerProvider.cs" />
     <Compile Include="Providers\TfsBranchProvider.cs" />
