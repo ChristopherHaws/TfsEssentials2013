@@ -43,16 +43,15 @@ namespace Spiral.TfsEssentials.Models
 			}
 		}
 
+		public BranchModel Branch { get; set; }
+
+		public List<BranchModel> Branches { get; set; }
+
 		public bool IsTfsOperationRunning { get; set; }
 
 		public List<ChangesetModel> IncomingChangesets { get; set; }
 
 		public List<ChangesetModel> OutgoingChangesets { get; set; }
-
-		public void OnOutgoingChangesetsChanged()
-		{
-			Debug.WriteLine("OutgoingChangesets Changed");
-		}
 
 		public bool HasUpstreamInfo { get; set; }
 	}

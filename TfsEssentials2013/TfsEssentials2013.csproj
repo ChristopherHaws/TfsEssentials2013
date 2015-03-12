@@ -150,6 +150,7 @@
     <Compile Include="Converters\ChangesetToolTipAuthorConverter.cs" />
     <Compile Include="Converters\ChangesetToolTipMessageConverter.cs" />
     <Compile Include="Converters\DateTimeFormatConverter.cs" />
+    <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Extentions\ServiceProviderExtentions.cs" />
     <Compile Include="Managers\IAsyncWorkManager.cs" />
     <Compile Include="Models\BranchModel.cs" />
@@ -221,6 +222,7 @@
     <Content Include="Resources\Branches.ico">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Resource Include="Resources\IdentityImage.png" />
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>

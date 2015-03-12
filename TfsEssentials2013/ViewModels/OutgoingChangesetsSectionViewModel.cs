@@ -95,6 +95,10 @@ namespace Spiral.TfsEssentials.ViewModels
 					this.UpdateActionLinks();
 					this.UpdateTitle();
 					break;
+				case "IncomingChangesets":
+				case "OutgoingChangesets":
+					this.UpdateItemsSource();
+					break;
 			}
 		}
 

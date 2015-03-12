@@ -10,6 +10,7 @@
 	<converters1:DateTimeFormatConverter x:Key="DateTimeFormatConverter"/>
 	<converters1:ChangesetToolTipAuthorConverter x:Key="ChangesetToolTipAuthorConverter"/>
 	<converters1:ChangesetToolTipMessageConverter x:Key="ChangesetToolTipMessageConverter"/>
+	<converters1:ImageConverter x:Key="ImageConverter"/>
 	<converters:TrueToVisibleConverter x:Key="TrueToVisibleConverter"/>
 	
 	<Style x:Key="InfoTextStyle" TargetType="{x:Type TextBlock}">
@@ -63,7 +64,7 @@
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<!--<Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Margin="1,0,0,0" Stretch="Uniform" Height="36" Width="36" Source="{Binding Path=AuthorAvatar, Converter={StaticResource ImageConverter}}"/>-->
+			<Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Margin="1,0,0,0" Stretch="Uniform" Height="36" Width="36" Source="{Binding Path=AuthorAvatar, Converter={StaticResource ImageConverter}}"/>
 			<TextBlock Grid.Row="0" Grid.Column="1" Margin="6,3,0,3" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Text="{Binding Path=Comments, Mode=OneWay}"/>
 			<Grid Row="1" Column="1" Margin="0">
 				<Grid.ColumnDefinitions>

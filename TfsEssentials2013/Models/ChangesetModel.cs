@@ -21,6 +21,8 @@ namespace Spiral.TfsEssentials.Models
 
 		public string AuthorName { get; set; }
 
+		public byte[] AuthorAvatar { get; set; }
+
 		public DateTimeOffset AuthoredTime { get; set; }
 	}
 }
