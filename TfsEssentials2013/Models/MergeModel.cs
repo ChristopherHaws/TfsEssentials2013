@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Microsoft.TeamFoundation;
 using PropertyChanged;
 
 namespace Spiral.TfsEssentials.Models
@@ -12,21 +10,8 @@ namespace Spiral.TfsEssentials.Models
 
 		public MergeModel()
 		{
-			TeamFoundationTrace.Verbose(TraceKeywordSets.TeamExplorer, "Entering ChangesetModel constructor");
-
-			this.IncomingChangesets = new List<ChangesetModel>()
-			{
-				new ChangesetModel(),
-				new ChangesetModel(),
-				new ChangesetModel()
-			};
-
-			this.OutgoingChangesets = new List<ChangesetModel>()
-			{
-				new ChangesetModel(),
-				new ChangesetModel(),
-				new ChangesetModel()
-			};
+			this.IncomingChangesets = new List<ChangesetModel>();
+			this.OutgoingChangesets = new List<ChangesetModel>();
 
 			this.HasUpstreamInfo = true;
 		}

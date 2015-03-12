@@ -22,7 +22,8 @@ namespace Spiral.TfsEssentials.ViewModels
 				return this.Model != null
 					&& !this.Model.IsRepositoryOperationInProgress
 					&& !this.Model.IsTfsOperationRunning
-					&& this.Model.HasUpstreamInfo;
+					&& this.Model.HasUpstreamInfo
+					&& this.Model.IncomingChangesets.Any();
 			}
 			catch (Exception ex)
 			{
@@ -104,14 +105,12 @@ namespace Spiral.TfsEssentials.ViewModels
 				case "IsTfsOperationRunning":
 					this.UpdateActionLinks();
 					break;
+				case "IncomingChangesets":
+				case "OutgoingChangesets":
 				case "Branch":
 					this.UpdateItemsSource();
 					this.UpdateActionLinks();
 					this.UpdateTitle();
-					break;
-				case "IncomingChangesets":
-				case "OutgoingChangesets":
-					this.UpdateItemsSource();
 					break;
 			}
 		}

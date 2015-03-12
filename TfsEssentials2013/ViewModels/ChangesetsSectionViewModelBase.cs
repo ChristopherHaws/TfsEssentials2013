@@ -14,14 +14,7 @@ namespace Spiral.TfsEssentials.ViewModels
 
 		protected ChangesetsSectionViewModelBase()
 		{
-			this.ChangesetsItemsSource = new BatchedObservableCollection<ChangesetModel>()
-			{
-				new ChangesetModel(),
-				new ChangesetModel(),
-				new ChangesetModel(),
-				new ChangesetModel()
-			};
-
+			this.ChangesetsItemsSource = new BatchedObservableCollection<ChangesetModel>();
 			this.SelectedItems = new ObservableCollection<ChangesetModel>();
 
 			this.UpdateTitle();

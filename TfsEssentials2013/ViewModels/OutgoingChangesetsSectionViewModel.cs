@@ -90,14 +90,12 @@ namespace Spiral.TfsEssentials.ViewModels
 				case "IsTfsOperationRunning":
 					this.UpdateActionLinks();
 					break;
+				case "IncomingChangesets":
+				case "OutgoingChangesets":
 				case "Branch":
 					this.UpdateItemsSource();
 					this.UpdateActionLinks();
 					this.UpdateTitle();
-					break;
-				case "IncomingChangesets":
-				case "OutgoingChangesets":
-					this.UpdateItemsSource();
 					break;
 			}
 		}
